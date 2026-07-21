@@ -10,6 +10,8 @@ import { getListingBySlug, getRelatedListings } from "@/lib/listings";
 import { formatPrice, inquireListingLink } from "@/lib/format";
 import styles from "./listing.module.css";
 
+export const revalidate = 30; // Revalidate cached data every 30 seconds
+
 interface Props {
   params: { slug: string };
 }

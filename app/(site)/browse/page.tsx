@@ -10,6 +10,8 @@ export const metadata: Metadata = {
     "Browse verified second-hand items for sale in Kimana. Every listing is personally inspected before it goes live.",
 };
 
+export const revalidate = 30; // Revalidate cached data every 30 seconds
+
 const CONDITIONS = ["New", "Like New", "Good", "Fair", "Needs Repair"];
 
 interface BrowsePageProps {
