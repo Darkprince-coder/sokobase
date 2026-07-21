@@ -1,0 +1,118 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(250, 247, 242, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--color-sage);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--header-height);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.mark {
+  width: 34px;
+  height: 34px;
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-lg);
+  color: var(--color-charcoal);
+}
+
+.wordmarkAccent {
+  color: var(--color-primary);
+}
+
+.navDesktop {
+  display: none;
+  gap: var(--space-8);
+}
+
+.navLink {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-charcoal);
+}
+
+.navLink:hover {
+  color: var(--color-primary);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.sellButton {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-primary);
+  color: var(--color-white);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+.sellButton:hover {
+  background: var(--color-primary-dark);
+}
+
+.menuToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-charcoal);
+}
+
+.navMobile {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-2) var(--space-4) var(--space-4);
+  border-top: 1px solid var(--color-sage);
+  background: var(--color-paper);
+}
+
+.navMobileLink {
+  padding: var(--space-3) 0;
+  font-size: var(--text-base);
+  font-weight: 500;
+  border-bottom: 1px solid var(--color-sage);
+}
+
+.navMobileLink:last-child {
+  border-bottom: none;
+}
+
+@media (min-width: 768px) {
+  .navDesktop {
+    display: flex;
+  }
+  .sellButton {
+    display: inline-flex;
+  }
+  .menuToggle {
+    display: none;
+  }
+}
