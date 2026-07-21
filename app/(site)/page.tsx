@@ -150,8 +150,7 @@ export default async function HomePage() {
             </div>
           ) : (
             <p className={styles.empty}>
-              Feature a listing from the admin dashboard and it'll show up
-              here.
+              Nothing listed yet, check back soon!.
             </p>
           )}
         </div>
@@ -174,7 +173,7 @@ export default async function HomePage() {
             </div>
           ) : (
             <p className={styles.empty}>
-              New listings show up here first. Nothing posted yet.
+              New listings coming soon.
             </p>
           )}
         </div>
