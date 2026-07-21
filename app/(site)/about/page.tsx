@@ -18,9 +18,7 @@ export default function AboutPage() {
         <span className={styles.eyebrow}>About SokoBase</span>
         <h1 className={styles.title}>Built for Kimana. Growing with Kajiado.</h1>
         <p className={styles.lead}>
-          Too many sellers were getting underpaid by middlemen. So we cut
-          them out. We connect sellers straight to buyers, inspect every
-          item ourselves, and take a fair commission instead of a markup.
+          SokoBase is a local marketplace built to make buying and selling second-hand items easier and more trustworthy. We connect people who have things to sell with people who are looking for them, while giving buyers a chance to inspect items before making a decision.
         </p>
       </Reveal>
 
@@ -28,7 +26,7 @@ export default function AboutPage() {
         <Reveal delay={0.05} className={styles.block}>
           <Target className={styles.blockIcon} size={24} strokeWidth={1.8} />
           <h2 className={styles.blockTitle}>Our mission</h2>
-          <p>Fair prices for sellers. Real confidence for buyers. No markups.</p>
+          <p>Fair prices for sellers. Real confidence for buyers.</p>
         </Reveal>
         <Reveal delay={0.1} className={styles.block}>
           <ShieldCheck className={styles.blockIcon} size={24} strokeWidth={1.8} />

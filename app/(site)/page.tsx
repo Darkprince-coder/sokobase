@@ -19,9 +19,9 @@ import { sellItemLink, requestItemLink, formatPrice } from "@/lib/format";
 export const revalidate = 60; // re-fetch listings at most once a minute
 
 const TRUST_ITEMS = [
-  { icon: ShieldCheck, label: "Verified", text: "Every item inspected first." },
-  { icon: Tag, label: "Fair prices", text: "Honest value, no overpaying." },
-  { icon: MapPinned, label: "Safe meet-ups", text: "Our office, not a stranger's door." },
+  { icon: ShieldCheck, label: "Verified", text: "We inspect listed items and point out their condition clearly." },
+  { icon: Tag, label: "Fair prices", text: "You tell us what you want for your item. We help you find a fair price and a serious buyer." },
+  { icon: MapPinned, label: "Safe meet-ups", text: "Buyers and sellers meet at our office to inspect the item and complete the sale." },
   { icon: Users, label: "Community-built", text: "Made for Kimana, growing with Kajiado." },
 ];
 
@@ -78,13 +78,12 @@ export default async function HomePage() {
             alt="SokoBase verified inspection stamp"
             className={styles.heroMark}
           />
-          <span className={styles.eyebrow}>Kimana today. Kajiado next.</span>
+          <span className={styles.eyebrow}>Built for community.</span>
           <h1 className={styles.headline}>
-            Shop local. Sell smart. <span>No surprises.</span>
+            Buy & sell secondhand items. <span>with ease.</span>
           </h1>
           <p className={styles.subhead}>
-            We check every item before it&rsquo;s listed. Meet at our office,
-            pay safely, done.
+           SokoBase helps people buy and sell used items at fair prices. We inspect items, connect buyers with sellers and offer safe and smooth transaction.
           </p>
 
           <form action="/browse" method="get" className={styles.search}>
@@ -103,10 +102,10 @@ export default async function HomePage() {
           <div className={styles.heroActions}>
             <WhatsAppLink href={sellItemLink()} label="hero_sell_button" className={styles.heroCta}>
               <MessageCircle size={16} strokeWidth={2.2} />
-              Sell on WhatsApp
+              Sell on sokobase
             </WhatsAppLink>
             <Link href="/browse" className={styles.heroCtaSecondary}>
-              Browse listings
+              Browse items
             </Link>
           </div>
         </Reveal>
@@ -188,11 +187,11 @@ export default async function HomePage() {
             <div>
               <span className={styles.requestsEyebrow}>
                 <Sparkles size={14} strokeWidth={2.2} />
-                Client requests
+                Looking for something?
               </span>
-              <h2 className={styles.sectionTitle}>Can&rsquo;t find it? Ask us.</h2>
+              <h2 className={styles.sectionTitle}>Can&rsquo;t find what you need?</h2>
               <p className={styles.requestsText}>
-                Tell us what you need. We&rsquo;ll track it down. See what
+                Tell us what you're looking for. Someone nearby might have exactly what you need.See what
                 other buyers are hunting for below.
               </p>
               <div className={styles.requestsActions}>
@@ -202,7 +201,7 @@ export default async function HomePage() {
                   className={styles.requestsCta}
                 >
                   <MessageCircle size={16} strokeWidth={2.2} />
-                  Submit a request
+                  Tell us what you're looking for
                 </WhatsAppLink>
                 <Link href="/requests" className={styles.requestsLink}>
                   See all requests <ArrowRight size={14} strokeWidth={2.4} />
@@ -239,8 +238,8 @@ export default async function HomePage() {
             <Reveal delay={0.05}>
               <div className={styles.step}>
                 <span className={styles.stepNumber}>01</span>
-                <h3 className={styles.stepTitle}>Send it on WhatsApp</h3>
-                <p className={styles.stepText}>Photos, description, your price. That's it.</p>
+                <h3 className={styles.stepTitle}>Tell us what you're selling</h3>
+                <p className={styles.stepText}>Send us photos, the details and the price you're hoping to get. We'll take it from there</p>
               </div>
             </Reveal>
             <Reveal delay={0.1}>
@@ -248,16 +247,16 @@ export default async function HomePage() {
                 <span className={styles.stepNumber}>02</span>
                 <h3 className={styles.stepTitle}>We inspect it</h3>
                 <p className={styles.stepText}>
-                  We agree on commission, then list it with our verified stamp.
+                 If you're nearby, we inspect the item ourselves. We agree on the price and commission before it is listed.
                 </p>
               </div>
             </Reveal>
             <Reveal delay={0.15}>
               <div className={styles.step}>
                 <span className={styles.stepNumber}>03</span>
-                <h3 className={styles.stepTitle}>Meet at our office</h3>
+                <h3 className={styles.stepTitle}>Buyer checks before paying</h3>
                 <p className={styles.stepText}>
-                  Buyer inspects, pays us, we pay you. Same day.
+                 When someone is interested, they come to our office to see and test the item. If everything checks out, the sale is completed.
                 </p>
               </div>
             </Reveal>
@@ -269,7 +268,7 @@ export default async function HomePage() {
       <section className={styles.section}>
         <div className="container">
           <Reveal>
-            <h2 className={styles.sectionTitle}>Why buy from SokoBase</h2>
+            <h2 className={styles.sectionTitle}>Why use SokoBase</h2>
           </Reveal>
           <div className={styles.trustGrid}>
             {TRUST_ITEMS.map(({ icon: Icon, label, text }, i) => (
