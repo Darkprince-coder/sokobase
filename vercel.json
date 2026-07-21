@@ -4,11 +4,6 @@
       "source": "/admin",
       "destination": "/admin/dashboard",
       "permanent": false
-    },
-    {
-      "source": "/browse/:path*",
-      "destination": "/browse/:path*",
-      "permanent": false
     }
   ],
   "headers": [
