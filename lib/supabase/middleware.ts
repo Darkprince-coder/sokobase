@@ -12,12 +12,23 @@ export async function updateSession(request: NextRequest) {
         getAll() {
           return request.cookies.getAll();
         },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
+
+        setAll(
+          cookiesToSet: Array<{
+            name: string;
+            value: string;
+            options?: Record<string, any>;
+          }>
+        ) {
+          cookiesToSet.forEach(({ name, value }) => {
+            request.cookies.set(name, value);
+          });
+
           response = NextResponse.next({ request });
-          cookiesToSet.forEach(({ name, value, options }) =>
-            response.cookies.set(name, value, options)
-          );
+
+          cookiesToSet.forEach(({ name, value, options }) => {
+            response.cookies.set(name, value, options);
+          });
         },
       },
     }
@@ -33,6 +44,7 @@ export async function updateSession(request: NextRequest) {
   if (isAdminRoute && !isLoginRoute && !user) {
     const loginUrl = new URL("/admin/login", request.url);
     loginUrl.searchParams.set("next", request.nextUrl.pathname);
+
     return NextResponse.redirect(loginUrl);
   }
 
