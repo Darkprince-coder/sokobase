@@ -284,7 +284,7 @@ export default async function HomePage() {
       </section>
 
       {/* ---- Trust Stats: real numbers, only shown once there's something to show ---- */}
-      {showTrustStats && (
+      {/* {showTrustStats && (
         <section className={styles.statsBand}>
           <Reveal className={`container ${styles.statsInner}`}>
             <div className={styles.statBlock}>
@@ -300,8 +300,8 @@ export default async function HomePage() {
               <span className={styles.statCaption}>Happy customers</span>
             </div>
           </Reveal>
-        </section>
-      )}
+        </section> */}
+     {/*  )} */}
 
       {/* ---- CTA ---- */}
       <section className={styles.ctaBand}>
