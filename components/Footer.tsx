@@ -29,6 +29,7 @@ export default function Footer() {
           <ul className={styles.list}>
             <li><Link href="/browse">Browse listings</Link></li>
             <li><Link href="/categories">Categories</Link></li>
+            <li><Link href="/rentals">Rentals</Link></li>
             <li><Link href="/requests">Client requests</Link></li>
             <li><Link href="/about">About us</Link></li>
             <li><Link href="/contact">Contact &amp; office</Link></li>

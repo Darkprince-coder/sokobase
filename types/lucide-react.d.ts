@@ -30,6 +30,8 @@ declare module "lucide-react" {
   export const MapPinned: React.FC<LucideProps>;
   export const MapPin: React.FC<LucideProps>;
   export const Users: React.FC<LucideProps>;
+  export const Home: React.FC<LucideProps>;
+  export const Zap: React.FC<LucideProps>;
   export const Sparkles: React.FC<LucideProps>;
   export const HandCoins: React.FC<LucideProps>;
 

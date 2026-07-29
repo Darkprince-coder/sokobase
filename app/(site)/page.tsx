@@ -7,6 +7,7 @@ import {
   MapPinned,
   Users,
   Sparkles,
+  Home as HomeIcon,
 } from "lucide-react";
 import styles from "./page.module.css";
 import ProductCard from "@/components/ProductCard";
@@ -14,7 +15,7 @@ import WhatsAppLink from "@/components/WhatsAppLink";
 import Reveal from "@/components/motion/Reveal";
 import { getCategories, getFeaturedListings, getLatestListings } from "@/lib/listings";
 import { getOpenRequests, getTrustStats } from "@/lib/requests";
-import { sellItemLink, requestItemLink, formatPrice } from "@/lib/format";
+import { sellItemLink, requestItemLink, whatsappLink, formatPrice } from "@/lib/format";
 
 export const revalidate = 60; // re-fetch listings at most once a minute
 
@@ -176,6 +177,36 @@ export default async function HomePage() {
               New listings coming soon.
             </p>
           )}
+        </div>
+      </section>
+
+      {/* ---- Rentals teaser ---- */}
+      <section className={styles.section}>
+        <div className="container">
+          <Reveal className={styles.rentalsTeaser}>
+            <span className={styles.rentalsBadge}>
+              <HomeIcon size={14} strokeWidth={2.2} />
+              Coming soon
+            </span>
+            <h2 className={styles.sectionTitle}>House hunting is about to get easier.</h2>
+            <p className={styles.rentalsText}>
+              We're building a rentals board for Kimana. Vacant houses, real
+              prices, real photos, no more asking around town.
+            </p>
+            <div className={styles.requestsActions}>
+              <WhatsAppLink
+                href={whatsappLink("Hi SokoBase, please let me know when the rentals board goes live.")}
+                label="home_rentals_notify"
+                className={styles.requestsCta}
+              >
+                <MessageCircle size={16} strokeWidth={2.2} />
+                Notify me when it's live
+              </WhatsAppLink>
+              <Link href="/rentals" className={styles.requestsLink}>
+                Learn more <ArrowRight size={14} strokeWidth={2.4} />
+              </Link>
+            </div>
+          </Reveal>
         </div>
       </section>
 
