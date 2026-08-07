@@ -1,75 +1,121 @@
 import type { Metadata } from "next";
-import { Home as HomeIcon, MessageCircle, Camera, Zap, MapPin } from "lucide-react";
+import Link from "next/link";
+import { SearchX, ListFilter, MessageCircle } from "lucide-react";
+import RentalCard from "@/components/RentalCard";
 import WhatsAppLink from "@/components/WhatsAppLink";
 import Reveal from "@/components/motion/Reveal";
+import { getRentals } from "@/lib/rentals";
 import { whatsappLink } from "@/lib/format";
 import styles from "./rentals.module.css";
 
 export const metadata: Metadata = {
   title: "Rentals",
   description:
-    "SokoBase is building a rentals board for Kimana, so finding a vacant house doesn't mean weeks of asking around town.",
+    "Vacant houses for rent in Kimana. Real photos, clear pricing, and the details that matter: electricity, water, and distance to town.",
 };
 
-const FEATURES = [
-  {
-    icon: Camera,
-    title: "Real listings",
-    text: "Actual photos of the actual house. Monthly rent and deposit, upfront, no surprises when you show up.",
-  },
-  {
-    icon: Zap,
-    title: "The details that matter",
-    text: "Electricity, water, and distance to town, listed clearly so you know what you're walking into.",
-  },
-  {
-    icon: MapPin,
-    title: "One place to check",
-    text: "No more asking ten different people if they know a vacant house. Just one board, kept up to date.",
-  },
-];
+const HOUSE_TYPES = ["Single Room", "Bedsitter", "1 Bedroom", "2 Bedroom", "3 Bedroom+", "Other"];
 
-export default function RentalsPage() {
+interface RentalsPageProps {
+  searchParams: {
+    q?: string;
+    house_type?: string;
+    minRent?: string;
+    maxRent?: string;
+    sort?: string;
+  };
+}
+
+export default async function RentalsPage({ searchParams }: RentalsPageProps) {
+  const { q, house_type, minRent, maxRent, sort } = searchParams;
+
+  const rentals = await getRentals({
+    q,
+    houseType: house_type,
+    minRent: minRent ? Number(minRent) : undefined,
+    maxRent: maxRent ? Number(maxRent) : undefined,
+    sort: (sort as "newest" | "rent_asc" | "rent_desc") || "newest",
+  });
+
   const notifyLink = whatsappLink(
-    "Hi SokoBase, please let me know when the rentals board goes live."
+    "Hi SokoBase, I have a vacant house I'd like to list for rent."
   );
 
   return (
     <main className="container">
-      <Reveal className={styles.hero}>
-        <span className={styles.eyebrow}>
-          <HomeIcon size={14} strokeWidth={2.2} />
-          Coming soon
-        </span>
-        <h1 className={styles.title}>House hunting in Kimana, sorted.</h1>
+      <Reveal className={styles.header}>
+        <h1 className={styles.title}>Rentals in Kimana</h1>
         <p className={styles.subtitle}>
-          Finding a vacant house here usually means calling everyone you
-          know and hoping someone's heard something. We're fixing that.
+          {rentals.length} house{rentals.length === 1 ? "" : "s"}. Real photos, clear pricing,
+          no surprises.
         </p>
-        <WhatsAppLink href={notifyLink} label="rentals_page_notify" className={styles.notifyButton}>
-          <MessageCircle size={16} strokeWidth={2.2} />
-          Notify me when it's live
-        </WhatsAppLink>
       </Reveal>
 
-      <div className={styles.grid}>
-        {FEATURES.map(({ icon: Icon, title, text }, i) => (
-          <Reveal key={title} delay={i * 0.05}>
-            <div className={styles.card}>
-              <Icon className={styles.cardIcon} size={22} strokeWidth={1.8} />
-              <h2 className={styles.cardTitle}>{title}</h2>
-              <p className={styles.cardText}>{text}</p>
-            </div>
-          </Reveal>
-        ))}
-      </div>
+      <Reveal>
+        <form method="get" className={styles.filters}>
+          <input
+            type="text"
+            name="q"
+            defaultValue={q}
+            placeholder="Search rentals..."
+            className={styles.filterInput}
+          />
+
+          <select name="house_type" defaultValue={house_type ?? ""} className={styles.filterSelect}>
+            <option value="">Any house type</option>
+            {HOUSE_TYPES.map((t) => (
+              <option key={t} value={t}>
+                {t}
+              </option>
+            ))}
+          </select>
+
+          <input
+            type="number"
+            name="minRent"
+            defaultValue={minRent}
+            placeholder="Min KSh/mo"
+            className={styles.filterInputSmall}
+          />
+          <input
+            type="number"
+            name="maxRent"
+            defaultValue={maxRent}
+            placeholder="Max KSh/mo"
+            className={styles.filterInputSmall}
+          />
+
+          <select name="sort" defaultValue={sort ?? "newest"} className={styles.filterSelect}>
+            <option value="newest">Newest first</option>
+            <option value="rent_asc">Rent: low to high</option>
+            <option value="rent_desc">Rent: high to low</option>
+          </select>
+
+          <button type="submit" className={styles.filterButton}>
+            <ListFilter size={15} strokeWidth={2.2} />
+            Apply
+          </button>
+        </form>
+      </Reveal>
+
+      {rentals.length > 0 ? (
+        <div className={styles.grid}>
+          {rentals.map((rental, i) => (
+            <RentalCard key={rental.id} rental={rental} index={i} />
+          ))}
+        </div>
+      ) : (
+        <div className={styles.empty}>
+          <SearchX size={28} strokeWidth={1.5} />
+          <p>No rentals match those filters yet. Try widening your search.</p>
+        </div>
+      )}
 
       <Reveal className={styles.landlordCta}>
-        <p className={styles.landlordText}>
-          Got a vacant house? List it with us when we launch.
-        </p>
-        <WhatsAppLink href={notifyLink} label="rentals_page_landlord" className={styles.landlordLink}>
-          Get in touch <MessageCircle size={14} strokeWidth={2.4} />
+        <p className={styles.landlordText}>Got a vacant house? List it with us.</p>
+        <WhatsAppLink href={notifyLink} label="rentals_browse_landlord" className={styles.landlordLink}>
+          <MessageCircle size={15} strokeWidth={2.2} />
+          Get in touch on WhatsApp
         </WhatsAppLink>
       </Reveal>
     </main>

@@ -11,6 +11,7 @@ const LINKS = [
   { href: "/admin/requests", label: "Requests" },
   { href: "/admin/sales", label: "Commission" },
   { href: "/admin/settings", label: "Settings" },
+  { href: "/admin/rentals", label: "Rentals" }
 ];
 
 export default function AdminNav({ email }: { email: string }) {

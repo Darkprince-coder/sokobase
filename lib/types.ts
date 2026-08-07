@@ -40,3 +40,33 @@ export interface ClientRequest {
   created_at: string;
   fulfilled_at: string | null;
 }
+
+export type RentalStatus = "available" | "rented";
+
+export type HouseType =
+  | "Single Room"
+  | "Bedsitter"
+  | "1 Bedroom"
+  | "2 Bedroom"
+  | "3 Bedroom+"
+  | "Other";
+
+export interface Rental {
+  id: string;
+  title: string;
+  slug: string;
+  description: string;
+  monthly_rent: number;
+  deposit: number | null;
+  house_type: HouseType;
+  location: string;
+  distance_to_town: string | null;
+  has_electricity: boolean;
+  has_water: boolean;
+  images: string[];
+  status: RentalStatus;
+  featured: boolean;
+  verified: boolean;
+  created_at: string;
+  updated_at: string;
+}

@@ -10,7 +10,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: siteUrl, changeFrequency: "daily", priority: 1 },
     { url: `${siteUrl}/browse`, changeFrequency: "daily", priority: 0.9 },
     { url: `${siteUrl}/categories`, changeFrequency: "weekly", priority: 0.6 },
-    { url: `${siteUrl}/rentals`, changeFrequency: "weekly", priority: 0.5 },
+    { url: `${siteUrl}/rentals`, changeFrequency: "daily", priority: 0.7 },
     { url: `${siteUrl}/requests`, changeFrequency: "daily", priority: 0.6 },
     { url: `${siteUrl}/about`, changeFrequency: "monthly", priority: 0.4 },
     { url: `${siteUrl}/contact`, changeFrequency: "monthly", priority: 0.4 },
@@ -28,5 +28,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  return [...staticRoutes, ...listingRoutes];
+  const { data: rentals } = await supabase
+    .from("rentals")
+    .select("slug, updated_at")
+    .neq("status", "rented");
+
+  const rentalRoutes: MetadataRoute.Sitemap = (rentals ?? []).map((r) => ({
+    url: `${siteUrl}/rentals/${r.slug}`,
+    lastModified: r.updated_at,
+    changeFrequency: "weekly",
+    priority: 0.7,
+  }));
+
+  return [...staticRoutes, ...listingRoutes, ...rentalRoutes];
 }

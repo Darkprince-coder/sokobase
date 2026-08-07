@@ -11,10 +11,12 @@ import {
 } from "lucide-react";
 import styles from "./page.module.css";
 import ProductCard from "@/components/ProductCard";
+import RentalCard from "@/components/RentalCard";
 import WhatsAppLink from "@/components/WhatsAppLink";
 import Reveal from "@/components/motion/Reveal";
 import { getCategories, getFeaturedListings, getLatestListings } from "@/lib/listings";
 import { getOpenRequests, getTrustStats } from "@/lib/requests";
+import { getLatestRentals } from "@/lib/rentals";
 import { sellItemLink, requestItemLink, whatsappLink, formatPrice } from "@/lib/format";
 
 export const revalidate = 60; // re-fetch listings at most once a minute
@@ -27,10 +29,11 @@ const TRUST_ITEMS = [
 ];
 
 export default async function HomePage() {
-  const [categories, featured, latest, openRequests, trustStats] = await Promise.all([
+  const [categories, featured, latest, latestRentals, openRequests, trustStats] = await Promise.all([
     getCategories(),
     getFeaturedListings(6),
     getLatestListings(8),
+    getLatestRentals(3),
     getOpenRequests(3),
     getTrustStats(),
   ]);
@@ -181,31 +184,51 @@ export default async function HomePage() {
       </section>
 
       {/* ---- Rentals teaser ---- */}
-      <section className={styles.section}>
+      <section className={`${styles.section} ${styles.requestsSection}`}>
         <div className="container">
-          <Reveal className={styles.rentalsTeaser}>
-            <span className={styles.rentalsBadge}>
-              <HomeIcon size={14} strokeWidth={2.2} />
-              Coming soon
-            </span>
-            <h2 className={styles.sectionTitle}>House hunting is about to get easier.</h2>
-            <p className={styles.rentalsText}>
-              We're building a rentals board for Kimana. Vacant houses, real
-              prices, real photos, no more asking around town.
-            </p>
-            <div className={styles.requestsActions}>
-              <WhatsAppLink
-                href={whatsappLink("Hi SokoBase, please let me know when the rentals board goes live.")}
-                label="home_rentals_notify"
-                className={styles.requestsCta}
-              >
-                <MessageCircle size={16} strokeWidth={2.2} />
-                Notify me when it's live
-              </WhatsAppLink>
-              <Link href="/rentals" className={styles.requestsLink}>
-                Learn more <ArrowRight size={14} strokeWidth={2.4} />
-              </Link>
+          <Reveal className={styles.requestsInner}>
+            <div>
+              <span className={styles.requestsEyebrow}>
+                <HomeIcon size={14} strokeWidth={2.2} />
+                Rentals
+              </span>
+              <h2 className={styles.sectionTitle}>Looking for a house?</h2>
+              <p className={styles.requestsText}>
+                Vacant houses in Kimana, with real photos and clear pricing.
+                Electricity, water, and distance to town, listed upfront.
+              </p>
+              <div className={styles.requestsActions}>
+                <Link href="/rentals" className={styles.requestsCta}>
+                  <HomeIcon size={16} strokeWidth={2.2} />
+                  Browse rentals
+                </Link>
+                <WhatsAppLink
+                  href={whatsappLink("Hi SokoBase, I have a vacant house I'd like to list for rent.")}
+                  label="home_rentals_list"
+                  className={styles.requestsLink}
+                >
+                  List your house <ArrowRight size={14} strokeWidth={2.4} />
+                </WhatsAppLink>
+              </div>
             </div>
+
+            {latestRentals.length > 0 && (
+              <div className={styles.requestsList}>
+                {latestRentals.map((rental) => (
+                  <Link
+                    key={rental.id}
+                    href={`/rentals/${rental.slug}`}
+                    className={styles.requestCard}
+                  >
+                    <span className={styles.requestBadge}>{rental.house_type}</span>
+                    <p className={styles.requestTitle}>{rental.title}</p>
+                    <p className={`price-tag ${styles.requestBudget}`}>
+                      {formatPrice(rental.monthly_rent)}/mo
+                    </p>
+                  </Link>
+                ))}
+              </div>
+            )}
           </Reveal>
         </div>
       </section>
