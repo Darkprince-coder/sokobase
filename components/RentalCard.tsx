@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { ShieldCheck, ImageOff, Zap, Droplet, MapPin } from "lucide-react";
+import { ShieldCheck, ImageOff, Zap, Droplets, MapPin } from "lucide-react";
 import styles from "./RentalCard.module.css";
 import { formatPrice } from "@/lib/format";
 import type { Rental } from "@/lib/types";
@@ -72,7 +72,7 @@ export default function RentalCard({
             )}
             {rental.has_water && (
               <span className={styles.utility}>
-                <Droplet size={12} strokeWidth={2} /> Water
+                <Droplets size={12} strokeWidth={2} /> Water
               </span>
             )}
           </div>
