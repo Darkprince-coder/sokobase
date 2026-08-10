@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { MessageCircle, Zap, Droplets, MapPin, Info, ZapOff, AlertCircle } from "lucide-react";
+import { MessageCircle, Zap, Droplet, MapPin, Info, ZapOff, AlertCircle } from "lucide-react";
 import ImageGallery from "@/components/ImageGallery";
 import RentalCard from "@/components/RentalCard";
 import WhatsAppLink from "@/components/WhatsAppLink";
@@ -99,7 +99,7 @@ export default async function RentalPage({ params }: Props) {
             </span>
             <span className={rental.has_water ? styles.utilityOn : styles.utilityOff}>
               {rental.has_water ? (
-                <Droplets size={14} strokeWidth={2} />
+                <Droplet size={14} strokeWidth={2} />
               ) : (
                 <AlertCircle size={14} strokeWidth={2} />
               )}
