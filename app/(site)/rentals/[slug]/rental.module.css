@@ -5,6 +5,17 @@
   padding: var(--space-8) 0;
 }
 
+/* Ensure grid children can shrink on small screens to avoid overflow */
+.layout,
+.layout > * {
+  min-width: 0;
+}
+
+/* Container for the info column (used in page.tsx) */
+.info {
+  min-width: 0;
+}
+
 .badgeRow {
   display: flex;
   gap: var(--space-2);
@@ -77,6 +88,13 @@
   padding: var(--space-4) 0;
   border-top: 1px solid var(--color-sage);
   border-bottom: 1px solid var(--color-sage);
+}
+
+/* Prevent the specs grid from forcing horizontal scroll on small screens */
+@media (max-width: 639px) {
+  .specs {
+    grid-template-columns: 1fr;
+  }
 }
 
 .specs dt {
