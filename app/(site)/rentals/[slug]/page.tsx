@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { MessageCircle, Zap, Droplet, MapPin, Info, ZapOff, AlertCircle } from "lucide-react";
+import { MessageCircle, Zap, MapPin, Info } from "lucide-react";
 import ImageGallery from "@/components/ImageGallery";
 import RentalCard from "@/components/RentalCard";
 import WhatsAppLink from "@/components/WhatsAppLink";
@@ -8,6 +8,7 @@ import Reveal from "@/components/motion/Reveal";
 import { getRentalBySlug, getRelatedRentals } from "@/lib/rentals";
 import { formatPrice, whatsappLink } from "@/lib/format";
 import styles from "./rental.module.css";
+// Removed `ZapOff` and `Droplets` imports (caused errors).
 
 interface Props {
   params: { slug: string };
@@ -90,19 +91,10 @@ export default async function RentalPage({ params }: Props) {
 
           <div className={styles.utilities}>
             <span className={rental.has_electricity ? styles.utilityOn : styles.utilityOff}>
-              {rental.has_electricity ? (
-                <Zap size={14} strokeWidth={2} />
-              ) : (
-                <ZapOff size={14} strokeWidth={2} />
-              )}
+              {rental.has_electricity && <Zap size={14} strokeWidth={2} />}
               {rental.has_electricity ? "Electricity available" : "No electricity"}
             </span>
             <span className={rental.has_water ? styles.utilityOn : styles.utilityOff}>
-              {rental.has_water ? (
-                <Droplet size={14} strokeWidth={2} />
-              ) : (
-                <AlertCircle size={14} strokeWidth={2} />
-              )}
               {rental.has_water ? "Water available" : "No running water"}
             </span>
           </div>

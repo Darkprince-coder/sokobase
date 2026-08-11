@@ -84,7 +84,7 @@ export default async function HomePage() {
           />
           <span className={styles.eyebrow}>Built for community.</span>
           <h1 className={styles.headline}>
-            Buy & sell secondhand items. <span>with ease.</span>
+            Buy, sell & find <span>with ease.</span>
           </h1>
           <p className={styles.subhead}>
            SokoBase helps people buy and sell used items at fair prices. We inspect items, connect buyers with sellers and offer safe and smooth transaction.
