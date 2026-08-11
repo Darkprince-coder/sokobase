@@ -36,7 +36,7 @@ export default function ContactPage() {
           </WhatsAppLink>
         </Reveal>
 
-        <Reveal delay={0.1} className={styles.card}>
+        {/* <Reveal delay={0.1} className={styles.card}>
           <MapPin className={styles.cardIcon} size={22} strokeWidth={1.8} />
           <h2 className={styles.cardTitle}>Visit our office</h2>
           <p className={styles.cardText}>{siteConfig.officeName}</p>
@@ -53,7 +53,7 @@ export default function ContactPage() {
           >
             Get directions <ArrowRight size={14} strokeWidth={2.4} />
           </a>
-        </Reveal>
+        </Reveal> */}
 
         <Reveal delay={0.15} className={styles.card}>
           <PackagePlus className={styles.cardIcon} size={22} strokeWidth={1.8} />

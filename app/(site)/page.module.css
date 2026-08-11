@@ -510,3 +510,76 @@
   color: #4b554e;
   margin: var(--space-3) 0;
 }
+
+.marketplaceGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+
+.marketplaceTile,
+.marketplaceTileSoon {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  background: var(--color-white);
+  border: 1px solid var(--color-sage);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  position: relative;
+}
+
+.marketplaceTile:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.marketplaceTileSoon {
+  opacity: 0.7;
+}
+
+.marketplaceIcon {
+  color: var(--color-primary);
+}
+
+.marketplaceTitle {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-lg);
+  color: var(--color-charcoal);
+}
+
+.marketplaceText {
+  font-size: var(--text-sm);
+  color: #6b756e;
+}
+
+.comingSoonBadge {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-ochre);
+  background: var(--color-ochre-tint);
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+@media (min-width: 640px) {
+  .marketplaceGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .marketplaceGrid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}

@@ -43,12 +43,18 @@ export interface ClientRequest {
 
 export type RentalStatus = "available" | "rented";
 
+export type RentalCategory = "residential" | "commercial";
+
 export type HouseType =
   | "Single Room"
   | "Bedsitter"
   | "1 Bedroom"
   | "2 Bedroom"
   | "3 Bedroom+"
+  | "Shop"
+  | "Office"
+  | "Warehouse"
+  | "Commercial Plot"
   | "Other";
 
 export interface Rental {
@@ -59,6 +65,7 @@ export interface Rental {
   monthly_rent: number;
   deposit: number | null;
   house_type: HouseType;
+  rental_category: RentalCategory;
   location: string;
   distance_to_town: string | null;
   has_electricity: boolean;

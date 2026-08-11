@@ -8,10 +8,13 @@ import {
   Users,
   Sparkles,
   Home as HomeIcon,
+  ShoppingBag,
+  Car,
+  Briefcase,
+  Mountain,
 } from "lucide-react";
 import styles from "./page.module.css";
 import ProductCard from "@/components/ProductCard";
-import RentalCard from "@/components/RentalCard";
 import WhatsAppLink from "@/components/WhatsAppLink";
 import Reveal from "@/components/motion/Reveal";
 import { getCategories, getFeaturedListings, getLatestListings } from "@/lib/listings";
@@ -19,13 +22,51 @@ import { getOpenRequests, getTrustStats } from "@/lib/requests";
 import { getLatestRentals } from "@/lib/rentals";
 import { sellItemLink, requestItemLink, whatsappLink, formatPrice } from "@/lib/format";
 
-export const revalidate = 60; // re-fetch listings at most once a minute
+export const revalidate = 60;
 
 const TRUST_ITEMS = [
-  { icon: ShieldCheck, label: "Verified", text: "We inspect listed items and point out their condition clearly." },
-  { icon: Tag, label: "Fair prices", text: "You tell us what you want for your item. We help you find a fair price and a serious buyer." },
-  { icon: MapPinned, label: "Safe meet-ups", text: "Buyers and sellers meet at our office to inspect the item and complete the sale." },
-  { icon: Users, label: "Community-built", text: "Made for Kimana, growing with Kajiado." },
+  { icon: ShieldCheck, label: "Verified", text: "We check listings and note their condition clearly before they go live." },
+  { icon: Tag, label: "Fair prices", text: "We help sellers price fairly and help buyers avoid overpaying." },
+  { icon: MapPinned, label: "Safe meet-ups", text: "Buyers and sellers deal with us directly, so every handover is safe." },
+  { icon: Users, label: "Hometown-first", text: "Built for your town, ready to grow with it." },
+];
+
+const MARKETPLACE_SECTIONS = [
+  {
+    icon: ShoppingBag,
+    title: "Secondhand Goods",
+    text: "Phones, furniture, appliances and more, inspected before they're listed.",
+    href: "/browse",
+    live: true,
+  },
+  {
+    icon: HomeIcon,
+    title: "Rentals",
+    text: "Homes and business premises for rent, with clear pricing.",
+    href: "/rentals",
+    live: true,
+  },
+  {
+    icon: Mountain,
+    title: "Land",
+    text: "Plots and parcels for sale, coming to Hometown SokoBase soon.",
+    href: null,
+    live: false,
+  },
+  {
+    icon: Car,
+    title: "Vehicles",
+    text: "Cars, motorbikes and more, coming to Hometown SokoBase soon.",
+    href: null,
+    live: false,
+  },
+  {
+    icon: Briefcase,
+    title: "Business Directory",
+    text: "Local businesses and services, coming to Hometown SokoBase soon.",
+    href: null,
+    live: false,
+  },
 ];
 
 export default async function HomePage() {
@@ -48,15 +89,15 @@ export default async function HomePage() {
     "@graph": [
       {
         "@type": "Organization",
-        name: "SokoBase",
+        name: "Hometown SokoBase",
         url: "https://sokobase.co.ke",
         logo: "https://sokobase.co.ke/brand/logo-mark.svg",
         description:
-          "SokoBase is Kimana's local marketplace for second-hand goods. Every item is personally inspected before sale.",
+          "Hometown SokoBase is a local marketplace for secondhand goods and rentals, with every listing verified before it goes live.",
       },
       {
         "@type": "WebSite",
-        name: "SokoBase",
+        name: "Hometown SokoBase",
         url: "https://sokobase.co.ke",
         potentialAction: {
           "@type": "SearchAction",
@@ -74,20 +115,21 @@ export default async function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* ---- Hero ---- */}
       <section className={styles.hero}>
         <Reveal className={`container ${styles.heroInner}`}>
           <img
             src="/brand/logo-mark.svg"
-            alt="SokoBase verified inspection stamp"
+            alt="Hometown SokoBase verified inspection stamp"
             className={styles.heroMark}
           />
-          <span className={styles.eyebrow}>Built for community.</span>
+          <span className={styles.eyebrow}>Your hometown marketplace</span>
           <h1 className={styles.headline}>
-            Buy, sell & find <span>with ease.</span>
+            Buy, sell, and rent, <span>all in your hometown.</span>
           </h1>
           <p className={styles.subhead}>
-           SokoBase helps people buy and sell used items at fair prices. We inspect items, connect buyers with sellers and offer safe and smooth transaction.
+            Hometown SokoBase connects buyers and sellers across secondhand
+            goods and rentals, with every listing checked and every deal
+            handled with care.
           </p>
 
           <form action="/browse" method="get" className={styles.search}>
@@ -106,21 +148,51 @@ export default async function HomePage() {
           <div className={styles.heroActions}>
             <WhatsAppLink href={sellItemLink()} label="hero_sell_button" className={styles.heroCta}>
               <MessageCircle size={16} strokeWidth={2.2} />
-              Sell on sokobase
+              List with us
             </WhatsAppLink>
             <Link href="/browse" className={styles.heroCtaSecondary}>
-              Browse items
+              Browse listings
             </Link>
           </div>
         </Reveal>
       </section>
 
-      {/* ---- Categories ---- */}
+      <section className={styles.section}>
+        <div className="container">
+          <Reveal>
+            <h2 className={styles.sectionTitle}>What are you looking for?</h2>
+            <div className={styles.marketplaceGrid}>
+              {MARKETPLACE_SECTIONS.map((item, i) => {
+                const Icon = item.icon;
+                const content = (
+                  <>
+                    <Icon className={styles.marketplaceIcon} size={26} strokeWidth={1.8} />
+                    <span className={styles.marketplaceTitle}>{item.title}</span>
+                    <p className={styles.marketplaceText}>{item.text}</p>
+                    {!item.live && <span className={styles.comingSoonBadge}>Coming soon</span>}
+                  </>
+                );
+
+                return item.live && item.href ? (
+                  <Link key={item.title} href={item.href} className={styles.marketplaceTile}>
+                    {content}
+                  </Link>
+                ) : (
+                  <div key={item.title} className={styles.marketplaceTileSoon}>
+                    {content}
+                  </div>
+                );
+              })}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
       {categories.length > 0 && (
         <section className={styles.section}>
           <div className="container">
             <Reveal>
-              <h2 className={styles.sectionTitle}>Shop by category</h2>
+              <h2 className={styles.sectionTitle}>Browse secondhand categories</h2>
               <div className={styles.categoryRow}>
                 {categories.map((cat) => (
                   <Link
@@ -137,7 +209,6 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ---- Featured Listings ---- */}
       <section className={styles.section}>
         <div className="container">
           <Reveal className={styles.sectionHead}>
@@ -153,14 +224,11 @@ export default async function HomePage() {
               ))}
             </div>
           ) : (
-            <p className={styles.empty}>
-              Nothing listed yet, check back soon!.
-            </p>
+            <p className={styles.empty}>Nothing listed yet. Check back soon.</p>
           )}
         </div>
       </section>
 
-      {/* ---- Latest Listings ---- */}
       <section className={styles.section}>
         <div className="container">
           <Reveal className={styles.sectionHead}>
@@ -176,14 +244,11 @@ export default async function HomePage() {
               ))}
             </div>
           ) : (
-            <p className={styles.empty}>
-              New listings coming soon.
-            </p>
+            <p className={styles.empty}>New listings coming soon.</p>
           )}
         </div>
       </section>
 
-      {/* ---- Rentals teaser ---- */}
       <section className={`${styles.section} ${styles.requestsSection}`}>
         <div className="container">
           <Reveal className={styles.requestsInner}>
@@ -192,10 +257,11 @@ export default async function HomePage() {
                 <HomeIcon size={14} strokeWidth={2.2} />
                 Rentals
               </span>
-              <h2 className={styles.sectionTitle}>Looking for a house?</h2>
+              <h2 className={styles.sectionTitle}>Looking for a place?</h2>
               <p className={styles.requestsText}>
-                Vacant houses in Kimana, with real photos and clear pricing.
-                Electricity, water, and distance to town, listed upfront.
+                Homes and business premises for rent, with real photos and
+                clear pricing. Electricity, water, and distance to town,
+                listed upfront.
               </p>
               <div className={styles.requestsActions}>
                 <Link href="/rentals" className={styles.requestsCta}>
@@ -203,11 +269,11 @@ export default async function HomePage() {
                   Browse rentals
                 </Link>
                 <WhatsAppLink
-                  href={whatsappLink("Hi SokoBase, I have a vacant house I'd like to list for rent.")}
+                  href={whatsappLink("Hi Hometown SokoBase, I have a property I'd like to list for rent.")}
                   label="home_rentals_list"
                   className={styles.requestsLink}
                 >
-                  List your house <ArrowRight size={14} strokeWidth={2.4} />
+                  List a property <ArrowRight size={14} strokeWidth={2.4} />
                 </WhatsAppLink>
               </div>
             </div>
@@ -233,7 +299,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ---- Client Requests teaser ---- */}
       <section className={`${styles.section} ${styles.requestsSection}`}>
         <div className="container">
           <Reveal className={styles.requestsInner}>
@@ -244,8 +309,8 @@ export default async function HomePage() {
               </span>
               <h2 className={styles.sectionTitle}>Can&rsquo;t find what you need?</h2>
               <p className={styles.requestsText}>
-                Tell us what you're looking for. Someone nearby might have exactly what you need.See what
-                other buyers are hunting for below.
+                Tell us what you&rsquo;re looking for and we&rsquo;ll help
+                you find it. See what other buyers are asking for below.
               </p>
               <div className={styles.requestsActions}>
                 <WhatsAppLink
@@ -281,7 +346,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ---- How It Works: a real 3-step process, so numbering it is earned ---- */}
       <section className={`${styles.section} ${styles.howSection}`}>
         <div className="container">
           <Reveal>
@@ -291,25 +355,30 @@ export default async function HomePage() {
             <Reveal delay={0.05}>
               <div className={styles.step}>
                 <span className={styles.stepNumber}>01</span>
-                <h3 className={styles.stepTitle}>Tell us what you're selling</h3>
-                <p className={styles.stepText}>Send us photos, the details and the price you're hoping to get. We'll take it from there</p>
+                <h3 className={styles.stepTitle}>Tell us what you have</h3>
+                <p className={styles.stepText}>
+                  Send photos, details, and your price on WhatsApp. Works for
+                  items or properties.
+                </p>
               </div>
             </Reveal>
             <Reveal delay={0.1}>
               <div className={styles.step}>
                 <span className={styles.stepNumber}>02</span>
-                <h3 className={styles.stepTitle}>We inspect it</h3>
+                <h3 className={styles.stepTitle}>We verify it</h3>
                 <p className={styles.stepText}>
-                 If you're nearby, we inspect the item ourselves. We agree on the price and commission before it is listed.
+                  We review the listing and, where possible, inspect it in
+                  person before it goes live.
                 </p>
               </div>
             </Reveal>
             <Reveal delay={0.15}>
               <div className={styles.step}>
                 <span className={styles.stepNumber}>03</span>
-                <h3 className={styles.stepTitle}>Buyer checks before paying</h3>
+                <h3 className={styles.stepTitle}>Complete it safely</h3>
                 <p className={styles.stepText}>
-                 When someone is interested, they come to our office to see and test the item. If everything checks out, the sale is completed.
+                  Buyers and tenants deal with us directly, so every
+                  transaction stays safe and straightforward.
                 </p>
               </div>
             </Reveal>
@@ -317,11 +386,10 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ---- Trust Features ---- */}
       <section className={styles.section}>
         <div className="container">
           <Reveal>
-            <h2 className={styles.sectionTitle}>Why use SokoBase</h2>
+            <h2 className={styles.sectionTitle}>Why use Hometown SokoBase</h2>
           </Reveal>
           <div className={styles.trustGrid}>
             {TRUST_ITEMS.map(({ icon: Icon, label, text }, i) => (
@@ -337,8 +405,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ---- Trust Stats: real numbers, only shown once there's something to show ---- */}
-      {/* {showTrustStats && (
+      {showTrustStats && (
         <section className={styles.statsBand}>
           <Reveal className={`container ${styles.statsInner}`}>
             <div className={styles.statBlock}>
@@ -354,17 +421,16 @@ export default async function HomePage() {
               <span className={styles.statCaption}>Happy customers</span>
             </div>
           </Reveal>
-        </section> */}
-     {/*  )} */}
+        </section>
+      )}
 
-      {/* ---- CTA ---- */}
       <section className={styles.ctaBand}>
         <Reveal className={`container ${styles.ctaInner}`}>
-          <h2 className={styles.ctaTitle}>Got something to sell?</h2>
+          <h2 className={styles.ctaTitle}>Got something to list?</h2>
           <p className={styles.ctaText}>Message us on WhatsApp. We&rsquo;ll handle the rest.</p>
           <WhatsAppLink href={sellItemLink()} label="cta_band_sell_button" className={styles.ctaButton}>
             <MessageCircle size={16} strokeWidth={2.2} />
-            Sell on SokoBase
+            List with us
           </WhatsAppLink>
         </Reveal>
       </section>

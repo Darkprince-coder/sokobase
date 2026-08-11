@@ -3,15 +3,13 @@
   grid-template-columns: 1fr;
   gap: var(--space-8);
   padding: var(--space-8) 0;
+  min-width: 0;
 }
 
-/* Ensure grid children can shrink on small screens to avoid overflow */
-.layout,
 .layout > * {
   min-width: 0;
 }
 
-/* Container for the info column (used in page.tsx) */
 .info {
   min-width: 0;
 }
@@ -20,6 +18,7 @@
   display: flex;
   gap: var(--space-2);
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .statusAvailable,
@@ -42,6 +41,19 @@
 .statusRented {
   color: var(--color-sold);
   background: var(--color-sage);
+}
+
+.category {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-ochre);
+  background: var(--color-ochre-tint);
+  padding: 4px 10px;
+  border-radius: 999px;
 }
 
 .verified {
@@ -88,13 +100,7 @@
   padding: var(--space-4) 0;
   border-top: 1px solid var(--color-sage);
   border-bottom: 1px solid var(--color-sage);
-}
-
-/* Prevent the specs grid from forcing horizontal scroll on small screens */
-@media (max-width: 639px) {
-  .specs {
-    grid-template-columns: 1fr;
-  }
+  min-width: 0;
 }
 
 .specs dt {
@@ -207,8 +213,18 @@
 
 .relatedGrid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   gap: var(--space-4);
+}
+
+@media (min-width: 640px) {
+  .specs {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .utilities {
+    flex-wrap: wrap;
+  }
 }
 
 @media (min-width: 768px) {
@@ -217,8 +233,23 @@
   }
 }
 
-@media (min-width: 640px) {
+@media (max-width: 767px) {
+  .specs {
+    grid-template-columns: 1fr;
+  }
+  .utilities {
+    flex-direction: column;
+  }
+  .utilities span {
+    width: 100%;
+  }
   .relatedGrid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 768px) {
+  .relatedGrid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }

@@ -29,6 +29,12 @@ declare module "lucide-react" {
   export const Tag: React.FC<LucideProps>;
   export const MapPinned: React.FC<LucideProps>;
   export const MapPin: React.FC<LucideProps>;
+  export const Building2: React.FC<LucideProps>;
+  export const Droplets: React.FC<LucideProps>;
+  export const ShoppingBag: React.FC<LucideProps>;
+  export const Car: React.FC<LucideProps>;
+  export const Briefcase: React.FC<LucideProps>;
+  export const Mountain: React.FC<LucideProps>;
   export const Users: React.FC<LucideProps>;
   export const Home: React.FC<LucideProps>;
   export const Zap: React.FC<LucideProps>;

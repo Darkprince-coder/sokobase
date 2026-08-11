@@ -3,6 +3,7 @@ import type { Rental } from "./types";
 
 export interface RentalFilters {
   houseType?: string;
+  category?: string;
   maxRent?: number;
   minRent?: number;
   q?: string;
@@ -13,6 +14,9 @@ export async function getRentals(filters: RentalFilters = {}): Promise<Rental[]>
   const supabase = createServerSupabase();
   let query = supabase.from("rentals").select("*");
 
+  if (filters.category) {
+    query = query.eq("rental_category", filters.category);
+  }
   if (filters.houseType) {
     query = query.eq("house_type", filters.houseType);
   }

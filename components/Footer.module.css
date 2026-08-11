@@ -79,10 +79,16 @@
   padding: var(--space-4);
   font-size: var(--text-xs);
   color: #7c887f;
+  display: grid;
+  grid-template-columns: 1fr;
 }
 
 @media (min-width: 768px) {
   .grid {
     grid-template-columns: 2fr 1fr 1fr;
+  }
+
+  .bottom {
+    grid-template-columns: 1fr auto;
   }
 }

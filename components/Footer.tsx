@@ -17,11 +17,11 @@ export default function Footer() {
           <div className={styles.brand}>
             <img src="/brand/logo-mark.svg" alt="" className={styles.mark} />
             <span className={styles.wordmark}>
-              Soko<span className={styles.wordmarkAccent}>Base</span>
+              Hometown <span className={styles.wordmarkAccent}>SokoBase</span>
             </span>
           </div>
           <p className={styles.tagline}>Everything local. One place.</p>
-          <p className={styles.copy}>Live in Kimana. Growing across Kajiado.</p>
+          <p className={styles.copy}>Built in Kimana. Growing across the region.</p>
         </div>
 
         <div>
@@ -50,7 +50,18 @@ export default function Footer() {
       </div>
 
       <div className={`container ${styles.bottom}`}>
-        <span>&copy; {new Date().getFullYear()} SokoBase. All rights reserved.</span>
+
+         <a
+          href="https://mjelite.vercel.app"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: "#cfd8d1", marginLeft: 8, fontWeight: 600 }}
+        >
+          Built and maintained by MJ ELITE CREATIVES
+        </a>
+        <span>&copy; {new Date().getFullYear()} Hometown SokoBase. All rights reserved.</span>
+        
+       
       </div>
     </footer>
   );

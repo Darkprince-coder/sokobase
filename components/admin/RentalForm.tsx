@@ -3,7 +3,18 @@ import ImageUploader from "@/components/admin/ImageUploader";
 import type { AdminRentalDetail } from "@/lib/adminRentalsData";
 import styles from "@/components/admin/ListingForm.module.css";
 
-const HOUSE_TYPES = ["Single Room", "Bedsitter", "1 Bedroom", "2 Bedroom", "3 Bedroom+", "Other"];
+const HOUSE_TYPES = [
+  "Single Room",
+  "Bedsitter",
+  "1 Bedroom",
+  "2 Bedroom",
+  "3 Bedroom+",
+  "Shop",
+  "Office",
+  "Warehouse",
+  "Commercial Plot",
+  "Other",
+];
 
 export default function RentalForm({
   action,
@@ -15,7 +26,7 @@ export default function RentalForm({
   return (
     <form action={action} className={styles.form}>
       <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>House details</h2>
+        <h2 className={styles.sectionTitle}>Property details</h2>
 
         <label className={styles.label}>
           Title
@@ -78,7 +89,19 @@ export default function RentalForm({
 
         <div className={styles.row}>
           <label className={styles.label}>
-            House type
+            Listing category
+            <select
+              name="rental_category"
+              defaultValue={rental?.rental_category ?? "residential"}
+              className={styles.select}
+            >
+              <option value="residential">Residential</option>
+              <option value="commercial">Commercial / Business</option>
+            </select>
+          </label>
+
+          <label className={styles.label}>
+            Property type
             <select
               name="house_type"
               defaultValue={rental?.house_type ?? "Bedsitter"}
@@ -91,7 +114,9 @@ export default function RentalForm({
               ))}
             </select>
           </label>
+        </div>
 
+        <div className={styles.row}>
           <label className={styles.label}>
             Location
             <input
@@ -100,17 +125,17 @@ export default function RentalForm({
               className={styles.input}
             />
           </label>
-        </div>
 
-        <label className={styles.label}>
-          Distance to town &mdash; optional
-          <input
-            name="distance_to_town"
-            defaultValue={rental?.distance_to_town ?? ""}
-            className={styles.input}
-            placeholder="e.g. 5 min boda ride, 2km"
-          />
-        </label>
+          <label className={styles.label}>
+            Distance to town &mdash; optional
+            <input
+              name="distance_to_town"
+              defaultValue={rental?.distance_to_town ?? ""}
+              className={styles.input}
+              placeholder="e.g. 5 min boda ride, 2km"
+            />
+          </label>
+        </div>
 
         <div className={styles.checkboxRow}>
           <label className={styles.checkboxLabel}>
@@ -149,11 +174,11 @@ export default function RentalForm({
       </section>
 
       <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>Landlord details (private &mdash; never shown publicly)</h2>
+        <h2 className={styles.sectionTitle}>Owner details (private &mdash; never shown publicly)</h2>
 
         <div className={styles.row}>
           <label className={styles.label}>
-            Landlord name
+            Owner name
             <input
               name="landlord_name"
               defaultValue={rental?.rental_contact?.landlord_name}
@@ -161,7 +186,7 @@ export default function RentalForm({
             />
           </label>
           <label className={styles.label}>
-            Landlord phone
+            Owner phone
             <input
               name="landlord_phone"
               defaultValue={rental?.rental_contact?.landlord_phone}
@@ -178,7 +203,7 @@ export default function RentalForm({
             defaultValue={rental?.rental_contact?.intake_notes ?? ""}
             className={styles.textarea}
             rows={3}
-            placeholder="Anything relevant from the landlord conversation"
+            placeholder="Anything relevant from the owner conversation"
           />
         </label>
       </section>

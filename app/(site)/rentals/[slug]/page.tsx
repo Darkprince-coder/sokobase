@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { MessageCircle, Zap, MapPin, Info } from "lucide-react";
+import { MessageCircle, Zap, MapPin, Info, Building2, Home as HomeIcon } from "lucide-react";
 import ImageGallery from "@/components/ImageGallery";
 import RentalCard from "@/components/RentalCard";
 import WhatsAppLink from "@/components/WhatsAppLink";
@@ -8,7 +8,6 @@ import Reveal from "@/components/motion/Reveal";
 import { getRentalBySlug, getRelatedRentals } from "@/lib/rentals";
 import { formatPrice, whatsappLink } from "@/lib/format";
 import styles from "./rental.module.css";
-// Removed `ZapOff` and `Droplets` imports (caused errors).
 
 interface Props {
   params: { slug: string };
@@ -38,9 +37,10 @@ export default async function RentalPage({ params }: Props) {
   const related = await getRelatedRentals(rental.house_type, rental.id);
   const pageUrl = `https://sokobase.co.ke/rentals/${rental.slug}`;
   const isAvailable = rental.status === "available";
+  const isCommercial = rental.rental_category === "commercial";
 
   const inquireLink = whatsappLink(
-    `Hi SokoBase, I'm interested in "${rental.title}" (${pageUrl}). Is it still available?`
+    `Hi Hometown SokoBase, I'm interested in "${rental.title}" (${pageUrl}). Is it still available?`
   );
 
   return (
@@ -54,6 +54,14 @@ export default async function RentalPage({ params }: Props) {
           <div className={styles.badgeRow}>
             <span className={isAvailable ? styles.statusAvailable : styles.statusRented}>
               {isAvailable ? "Available" : "Rented"}
+            </span>
+            <span className={styles.category}>
+              {isCommercial ? (
+                <Building2 size={13} strokeWidth={2.2} />
+              ) : (
+                <HomeIcon size={13} strokeWidth={2.2} />
+              )}
+              {isCommercial ? "Commercial" : "Residential"}
             </span>
             {rental.verified && (
               <span className={styles.verified}>
@@ -107,11 +115,11 @@ export default async function RentalPage({ params }: Props) {
           {isAvailable ? (
             <WhatsAppLink href={inquireLink} label={`rental_${rental.slug}`} className={styles.cta}>
               <MessageCircle size={17} strokeWidth={2.2} />
-              Ask about this house on WhatsApp
+              Ask about this property on WhatsApp
             </WhatsAppLink>
           ) : (
             <div className={styles.unavailable}>
-              This house has been rented. Check <a href="/rentals">other rentals</a>.
+              This property has been rented. Check <a href="/rentals">other rentals</a>.
             </div>
           )}
 

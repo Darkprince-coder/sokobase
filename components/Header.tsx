@@ -25,9 +25,9 @@ export default function Header() {
       <div className={`container ${styles.bar}`}>
         <Link href="/" className={styles.brand} onClick={() => setOpen(false)}>
           <img src="/brand/logo-mark.svg" alt="" className={styles.mark} />
-          <span className={styles.wordmark}>
-            Soko<span className={styles.wordmarkAccent}>Base</span>
-          </span>
+           <span className={styles.wordmark}>
+              Hometown <span className={styles.wordmarkAccent}>SokoBase</span>
+            </span>
         </Link>
 
         <nav className={styles.navDesktop} aria-label="Primary">
@@ -41,7 +41,7 @@ export default function Header() {
         <div className={styles.actions}>
           <WhatsAppLink href={sellItemLink()} label="header_sell_button" className={styles.sellButton}>
             <MessageCircle size={15} strokeWidth={2.2} />
-            Sell on SokoBase
+            List with us
           </WhatsAppLink>
           <button
             className={styles.menuToggle}

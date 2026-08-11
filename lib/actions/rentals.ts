@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createAuthedServerClient } from "@/lib/supabase/authServer";
 import { slugify } from "@/lib/slug";
-import type { HouseType, RentalStatus } from "@/lib/types";
+import type { HouseType, RentalCategory, RentalStatus } from "@/lib/types";
 
 function parseImages(raw: string): string[] {
   return raw
@@ -29,6 +29,7 @@ export async function createRental(formData: FormData) {
       monthly_rent: Number(formData.get("monthly_rent") || 0),
       deposit: formData.get("deposit") ? Number(formData.get("deposit")) : null,
       house_type: String(formData.get("house_type") || "Other") as HouseType,
+      rental_category: String(formData.get("rental_category") || "residential") as RentalCategory,
       location: String(formData.get("location") || "Kimana"),
       distance_to_town: String(formData.get("distance_to_town") || "") || null,
       has_electricity: formData.get("has_electricity") === "on",
@@ -79,6 +80,7 @@ export async function updateRental(id: string, formData: FormData) {
       monthly_rent: Number(formData.get("monthly_rent") || 0),
       deposit: formData.get("deposit") ? Number(formData.get("deposit")) : null,
       house_type: String(formData.get("house_type") || "Other") as HouseType,
+      rental_category: String(formData.get("rental_category") || "residential") as RentalCategory,
       location: String(formData.get("location") || "Kimana"),
       distance_to_town: String(formData.get("distance_to_town") || "") || null,
       has_electricity: formData.get("has_electricity") === "on",

@@ -26,28 +26,31 @@ const plexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
-const siteUrl = "https://sokobase.co.ke"; // update once the real domain is live
+const siteUrl = "https://sokobase.co.ke";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "SokoBase: Buy & Sell Locally in Kimana",
-    template: "%s | SokoBase",
+    default: "Hometown SokoBase: Buy, Sell & Rent Locally",
+    template: "%s | Hometown SokoBase",
   },
   description:
-    "SokoBase is Kimana's local marketplace for second-hand goods. Every item is inspected before sale, with safe office meet-ups and fair prices for sellers.",
+    "Hometown SokoBase is a local marketplace for secondhand goods and rentals, with every listing verified and every deal handled with care. Built in Kimana, growing across the region.",
   keywords: [
     "Kimana marketplace",
     "buy and sell Kimana",
     "second hand Kimana",
+    "houses for rent Kimana",
+    "Hometown SokoBase",
     "SokoBase",
-    "Kajiado second hand goods",
+    "Kajiado marketplace",
   ],
   openGraph: {
-    title: "SokoBase: Buy & Sell Locally in Kimana",
-    description: "Kimana's local marketplace. Every item inspected before sale.",
+    title: "Hometown SokoBase: Buy, Sell & Rent Locally",
+    description:
+      "A local marketplace for secondhand goods and rentals. Every listing verified, every deal handled with care.",
     url: siteUrl,
-    siteName: "SokoBase",
+    siteName: "Hometown SokoBase",
     locale: "en_KE",
     type: "website",
   },
