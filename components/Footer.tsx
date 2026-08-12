@@ -57,7 +57,7 @@ export default function Footer() {
           rel="noopener noreferrer"
           style={{ color: "#cfd8d1", marginLeft: 8, fontWeight: 600 }}
         >
-          Built and maintained by MJ ELITE CREATIVES
+          Built and maintained by<span style={{ color: "#06d66e", marginLeft: 8, fontWeight: 800 }}>MJ ELITE CREATIVES</span>
         </a>
         <span>&copy; {new Date().getFullYear()} Hometown SokoBase. All rights reserved.</span>
         

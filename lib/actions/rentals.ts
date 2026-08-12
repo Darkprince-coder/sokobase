@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createAuthedServerClient } from "@/lib/supabase/authServer";
-import { slugify } from "@/lib/slug";
+import { slugify, getUniqueSlug } from "@/lib/slug";
 import type { HouseType, RentalCategory, RentalStatus } from "@/lib/types";
 
 function parseImages(raw: string): string[] {
@@ -18,7 +18,8 @@ export async function createRental(formData: FormData) {
 
   const title = String(formData.get("title") || "").trim();
   const rawSlug = String(formData.get("slug") || "").trim();
-  const slug = rawSlug ? slugify(rawSlug) : slugify(title);
+  const baseSlug = rawSlug ? slugify(rawSlug) : slugify(title);
+  const slug = await getUniqueSlug(supabase, "rentals", baseSlug);
 
   const { data: rental, error } = await supabase
     .from("rentals")
@@ -69,7 +70,8 @@ export async function updateRental(id: string, formData: FormData) {
 
   const title = String(formData.get("title") || "").trim();
   const rawSlug = String(formData.get("slug") || "").trim();
-  const slug = rawSlug ? slugify(rawSlug) : slugify(title);
+  const baseSlug = rawSlug ? slugify(rawSlug) : slugify(title);
+  const slug = await getUniqueSlug(supabase, "rentals", baseSlug, id);
 
   const { error } = await supabase
     .from("rentals")

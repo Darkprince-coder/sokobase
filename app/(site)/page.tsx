@@ -405,7 +405,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {showTrustStats && (
+      {/* {showTrustStats && (
         <section className={styles.statsBand}>
           <Reveal className={`container ${styles.statsInner}`}>
             <div className={styles.statBlock}>
@@ -423,7 +423,7 @@ export default async function HomePage() {
           </Reveal>
         </section>
       )}
-
+ */}
       <section className={styles.ctaBand}>
         <Reveal className={`container ${styles.ctaInner}`}>
           <h2 className={styles.ctaTitle}>Got something to list?</h2>

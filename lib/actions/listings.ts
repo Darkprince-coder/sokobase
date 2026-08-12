@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createAuthedServerClient } from "@/lib/supabase/authServer";
-import { slugify } from "@/lib/slug";
+import { slugify, getUniqueSlug } from "@/lib/slug";
 import type { Condition, ListingStatus } from "@/lib/types";
 
 function parseImages(raw: string): string[] {
@@ -18,7 +18,8 @@ export async function createListing(formData: FormData) {
 
   const title = String(formData.get("title") || "").trim();
   const rawSlug = String(formData.get("slug") || "").trim();
-  const slug = rawSlug ? slugify(rawSlug) : slugify(title);
+  const baseSlug = rawSlug ? slugify(rawSlug) : slugify(title);
+  const slug = await getUniqueSlug(supabase, "listings", baseSlug);
 
   const { data: listing, error } = await supabase
     .from("listings")
@@ -66,7 +67,8 @@ export async function updateListing(id: string, formData: FormData) {
 
   const title = String(formData.get("title") || "").trim();
   const rawSlug = String(formData.get("slug") || "").trim();
-  const slug = rawSlug ? slugify(rawSlug) : slugify(title);
+  const baseSlug = rawSlug ? slugify(rawSlug) : slugify(title);
+  const slug = await getUniqueSlug(supabase, "listings", baseSlug, id);
 
   const { error } = await supabase
     .from("listings")
