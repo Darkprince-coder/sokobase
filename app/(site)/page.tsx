@@ -17,7 +17,7 @@ import styles from "./page.module.css";
 import ProductCard from "@/components/ProductCard";
 import WhatsAppLink from "@/components/WhatsAppLink";
 import Reveal from "@/components/motion/Reveal";
-import { getCategories, getFeaturedListings, getLatestListings } from "@/lib/listings";
+import { getCategories, getFeaturedListings, getLatestListings, getNewItems } from "@/lib/listings";
 import { getOpenRequests, getTrustStats } from "@/lib/requests";
 import { getLatestRentals } from "@/lib/rentals";
 import { sellItemLink, requestItemLink, whatsappLink, formatPrice } from "@/lib/format";
@@ -70,14 +70,16 @@ const MARKETPLACE_SECTIONS = [
 ];
 
 export default async function HomePage() {
-  const [categories, featured, latest, latestRentals, openRequests, trustStats] = await Promise.all([
-    getCategories(),
-    getFeaturedListings(6),
-    getLatestListings(8),
-    getLatestRentals(3),
-    getOpenRequests(3),
-    getTrustStats(),
-  ]);
+  const [categories, featured, latest, newItems, latestRentals, openRequests, trustStats] =
+    await Promise.all([
+      getCategories(),
+      getFeaturedListings(6),
+      getLatestListings(8),
+      getNewItems(8),
+      getLatestRentals(3),
+      getOpenRequests(3),
+      getTrustStats(),
+    ]);
 
   const showTrustStats =
     trustStats.itemsSold > 0 ||
@@ -93,7 +95,7 @@ export default async function HomePage() {
         url: "https://sokobase.co.ke",
         logo: "https://sokobase.co.ke/brand/logo-mark.svg",
         description:
-          "Hometown SokoBase is a local marketplace for secondhand goods and rentals, with every listing verified before it goes live.",
+          "Hometown SokoBase is a local marketplace for secondhand and new goods and rentals, with every listing verified before it goes live.",
       },
       {
         "@type": "WebSite",
@@ -128,8 +130,8 @@ export default async function HomePage() {
           </h1>
           <p className={styles.subhead}>
             Hometown SokoBase connects buyers and sellers across secondhand
-            goods and rentals, with every listing checked and every deal
-            handled with care.
+            and new goods and rentals, with every listing checked and every
+            deal handled with care.
           </p>
 
           <form action="/browse" method="get" className={styles.search}>
@@ -248,6 +250,33 @@ export default async function HomePage() {
           )}
         </div>
       </section>
+
+      {/* NEW — New Items section. Only renders once the admin has
+          posted at least one listing_type = "new" item, so it never
+          shows an empty/awkward section on a fresh install. */}
+      {newItems.length > 0 && (
+        <section className={styles.section}>
+          <div className="container">
+            <Reveal className={styles.sectionHead}>
+              <div>
+                <span className={styles.requestsEyebrow}>
+                  <Sparkles size={14} strokeWidth={2.2} />
+                  New items
+                </span>
+                <h2 className={styles.sectionTitle}>Fresh from our merchant partners</h2>
+              </div>
+              <Link href="/browse?type=new" className={styles.sectionLink}>
+                View all <ArrowRight size={14} strokeWidth={2.4} />
+              </Link>
+            </Reveal>
+            <div className={styles.grid}>
+              {newItems.map((listing, i) => (
+                <ProductCard key={listing.id} listing={listing} index={i} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       <section className={`${styles.section} ${styles.requestsSection}`}>
         <div className="container">
@@ -405,25 +434,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* {showTrustStats && (
-        <section className={styles.statsBand}>
-          <Reveal className={`container ${styles.statsInner}`}>
-            <div className={styles.statBlock}>
-              <span className={styles.statNumber}>{trustStats.itemsSold}</span>
-              <span className={styles.statCaption}>Items sold</span>
-            </div>
-            <div className={styles.statBlock}>
-              <span className={styles.statNumber}>{trustStats.transactionsCompleted}</span>
-              <span className={styles.statCaption}>Transactions</span>
-            </div>
-            <div className={styles.statBlock}>
-              <span className={styles.statNumber}>{trustStats.satisfiedCustomers}</span>
-              <span className={styles.statCaption}>Happy customers</span>
-            </div>
-          </Reveal>
-        </section>
-      )}
- */}
       <section className={styles.ctaBand}>
         <Reveal className={`container ${styles.ctaInner}`}>
           <h2 className={styles.ctaTitle}>Got something to list?</h2>

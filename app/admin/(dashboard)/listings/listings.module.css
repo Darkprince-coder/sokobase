@@ -84,6 +84,20 @@
   border-radius: 999px;
 }
 
+/* NEW — differentiates admin-posted new products from secondhand
+   items in the listings table at a glance. */
+.typeTag {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-primary-dark);
+  background: var(--color-primary-tint);
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
 .infoMeta {
   display: flex;
   gap: var(--space-3);

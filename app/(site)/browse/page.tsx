@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { SearchX, ListFilter } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 import { getCategories, getListings } from "@/lib/listings";
@@ -7,7 +8,7 @@ import styles from "./browse.module.css";
 export const metadata: Metadata = {
   title: "Browse Listings",
   description:
-    "Browse verified second-hand items for sale in Kimana. Every listing is personally inspected before it goes live.",
+    "Browse secondhand and new items for sale in Kimana. Every listing is personally inspected before it goes live.",
 };
 
 export const revalidate = 30; // Revalidate cached data every 30 seconds
@@ -19,6 +20,7 @@ interface BrowsePageProps {
     q?: string;
     category?: string;
     condition?: string;
+    type?: string; // "secondhand" | "new"
     minPrice?: string;
     maxPrice?: string;
     sort?: string;
@@ -26,7 +28,7 @@ interface BrowsePageProps {
 }
 
 export default async function BrowsePage({ searchParams }: BrowsePageProps) {
-  const { q, category, condition, minPrice, maxPrice, sort } = searchParams;
+  const { q, category, condition, type, minPrice, maxPrice, sort } = searchParams;
 
   const [categories, listings] = await Promise.all([
     getCategories(),
@@ -34,11 +36,18 @@ export default async function BrowsePage({ searchParams }: BrowsePageProps) {
       q,
       category,
       condition,
+      type: type === "secondhand" || type === "new" ? type : undefined,
       minPrice: minPrice ? Number(minPrice) : undefined,
       maxPrice: maxPrice ? Number(maxPrice) : undefined,
       sort: (sort as "newest" | "price_asc" | "price_desc") || "newest",
     }),
   ]);
+
+  const tabs = [
+    { value: undefined, label: "All" },
+    { value: "secondhand", label: "Secondhand" },
+    { value: "new", label: "New items" },
+  ];
 
   return (
     <main className="container">
@@ -49,7 +58,25 @@ export default async function BrowsePage({ searchParams }: BrowsePageProps) {
         </p>
       </div>
 
+      <div className={styles.tabs}>
+        {tabs.map((tab) => {
+          const isActive = (type ?? undefined) === tab.value;
+          const href = tab.value ? `/browse?type=${tab.value}` : "/browse";
+          return (
+            <Link
+              key={tab.label}
+              href={href}
+              className={isActive ? styles.tabActive : styles.tab}
+            >
+              {tab.label}
+            </Link>
+          );
+        })}
+      </div>
+
       <form method="get" className={styles.filters}>
+        {type && <input type="hidden" name="type" value={type} />}
+
         <input
           type="text"
           name="q"

@@ -1,5 +1,9 @@
 export type ListingStatus = "available" | "reserved" | "sold";
 
+// NEW: distinguishes secondhand marketplace items from admin-posted
+// new products supplied through merchant/partner relationships.
+export type ListingType = "secondhand" | "new";
+
 export type Condition = "New" | "Like New" | "Good" | "Fair" | "Needs Repair";
 
 export interface Category {
@@ -21,6 +25,8 @@ export interface Listing {
   location: string;
   images: string[];
   status: ListingStatus;
+  listing_type: ListingType; // NEW
+  merchant_name: string | null; // NEW — only meaningful when listing_type === "new"
   featured: boolean;
   verified: boolean;
   view_count: number;

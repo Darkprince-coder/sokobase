@@ -1,5 +1,5 @@
 import { createServerSupabase } from "./supabaseServer";
-import type { Listing, Category } from "./types";
+import type { Listing, Category, ListingType } from "./types";
 
 const LISTING_SELECT = "*, category:categories(*)";
 
@@ -49,9 +49,28 @@ export async function getLatestListings(limit = 8): Promise<Listing[]> {
   return (data as unknown as Listing[]) ?? [];
 }
 
+// NEW: admin-posted new products, for the homepage "New Items" section.
+export async function getNewItems(limit = 8): Promise<Listing[]> {
+  const supabase = createServerSupabase();
+  const { data, error } = await supabase
+    .from("listings")
+    .select(LISTING_SELECT)
+    .eq("listing_type", "new")
+    .neq("status", "sold")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  if (error) {
+    console.error("getNewItems error:", error.message);
+    return [];
+  }
+  return (data as unknown as Listing[]) ?? [];
+}
+
 export interface BrowseFilters {
   category?: string; // category slug
   condition?: string;
+  type?: ListingType; // NEW — "secondhand" | "new"
   minPrice?: number;
   maxPrice?: number;
   q?: string; // search term against title
@@ -73,6 +92,10 @@ export async function getListings(filters: BrowseFilters = {}): Promise<Listing[
 
   if (filters.condition) {
     query = query.eq("condition", filters.condition);
+  }
+
+  if (filters.type) {
+    query = query.eq("listing_type", filters.type);
   }
 
   if (filters.minPrice !== undefined) {

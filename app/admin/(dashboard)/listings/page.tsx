@@ -38,12 +38,16 @@ export default async function AdminListingsPage() {
                 <div className={styles.infoTop}>
                   <span className={styles.itemTitle}>{listing.title}</span>
                   <StatusBadge status={listing.status} />
+                  {listing.listing_type === "new" && (
+                    <span className={styles.typeTag}>New item</span>
+                  )}
                   {listing.featured && <span className={styles.featuredTag}>Featured</span>}
                 </div>
                 <div className={styles.infoMeta}>
                   <span className="price-tag">{formatPrice(listing.price)}</span>
                   <span>{listing.category?.name ?? "Uncategorized"}</span>
                   <span>{listing.condition}</span>
+                  {listing.merchant_name && <span>Merchant: {listing.merchant_name}</span>}
                 </div>
               </div>
 

@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createAuthedServerClient } from "@/lib/supabase/authServer";
 import { slugify, getUniqueSlug } from "@/lib/slug";
-import type { Condition, ListingStatus } from "@/lib/types";
+import type { Condition, ListingStatus, ListingType } from "@/lib/types";
 
 function parseImages(raw: string): string[] {
   return raw
@@ -21,6 +21,9 @@ export async function createListing(formData: FormData) {
   const baseSlug = rawSlug ? slugify(rawSlug) : slugify(title);
   const slug = await getUniqueSlug(supabase, "listings", baseSlug);
 
+  const listingType = String(formData.get("listing_type") || "secondhand") as ListingType;
+  const merchantName = String(formData.get("merchant_name") || "").trim();
+
   const { data: listing, error } = await supabase
     .from("listings")
     .insert({
@@ -35,6 +38,8 @@ export async function createListing(formData: FormData) {
       featured: formData.get("featured") === "on",
       verified: formData.get("verified") !== "off",
       status: "available" as ListingStatus,
+      listing_type: listingType,
+      merchant_name: listingType === "new" ? merchantName || null : null,
     })
     .select()
     .single();
@@ -70,6 +75,9 @@ export async function updateListing(id: string, formData: FormData) {
   const baseSlug = rawSlug ? slugify(rawSlug) : slugify(title);
   const slug = await getUniqueSlug(supabase, "listings", baseSlug, id);
 
+  const listingType = String(formData.get("listing_type") || "secondhand") as ListingType;
+  const merchantName = String(formData.get("merchant_name") || "").trim();
+
   const { error } = await supabase
     .from("listings")
     .update({
@@ -83,6 +91,8 @@ export async function updateListing(id: string, formData: FormData) {
       images: parseImages(String(formData.get("images") || "")),
       featured: formData.get("featured") === "on",
       verified: formData.get("verified") !== "off",
+      listing_type: listingType,
+      merchant_name: listingType === "new" ? merchantName || null : null,
     })
     .eq("id", id);
 

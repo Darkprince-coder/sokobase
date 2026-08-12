@@ -20,6 +20,30 @@ export default function ListingForm({
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>Listing details</h2>
 
+        <div className={styles.row}>
+          <label className={styles.label}>
+            Listing type
+            <select
+              name="listing_type"
+              defaultValue={listing?.listing_type ?? "secondhand"}
+              className={styles.select}
+            >
+              <option value="secondhand">Secondhand</option>
+              <option value="new">New item</option>
+            </select>
+          </label>
+
+          <label className={styles.label}>
+            Merchant / supplier name &mdash; only used for new items
+            <input
+              name="merchant_name"
+              defaultValue={listing?.merchant_name ?? ""}
+              className={styles.input}
+              placeholder="e.g. Kimana Hardware Ltd (leave blank for secondhand)"
+            />
+          </label>
+        </div>
+
         <label className={styles.label}>
           Title
           <input
@@ -132,6 +156,10 @@ export default function ListingForm({
 
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>Seller details (private &mdash; never shown publicly)</h2>
+        <p style={{ fontSize: "var(--text-sm)", color: "#6b756e", marginTop: "calc(var(--space-2) * -1)" }}>
+          For new items sourced from a merchant, you can leave this section blank and use the
+          merchant name field above instead.
+        </p>
 
         <div className={styles.row}>
           <label className={styles.label}>

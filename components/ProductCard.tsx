@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { ShieldCheck, ImageOff } from "lucide-react";
+import { ShieldCheck, ImageOff, Sparkles } from "lucide-react";
 import styles from "./ProductCard.module.css";
 import StatusBadge from "./StatusBadge";
 import { formatPrice } from "@/lib/format";
@@ -17,6 +17,7 @@ export default function ProductCard({
 }) {
   const cover = listing.images?.[0];
   const shouldReduceMotion = useReducedMotion();
+  const isNew = listing.listing_type === "new";
 
   return (
     <motion.div
@@ -39,12 +40,20 @@ export default function ProductCard({
           )}
           <div className={styles.badgeRow}>
             <StatusBadge status={listing.status} />
-            {listing.verified && (
-              <span className={styles.verified} title="Personally inspected">
-                <ShieldCheck size={13} strokeWidth={2.2} />
-                Verified
-              </span>
-            )}
+            <div className={styles.badgeRowRight}>
+              {isNew && (
+                <span className={styles.newTag}>
+                  <Sparkles size={12} strokeWidth={2.4} />
+                  New
+                </span>
+              )}
+              {listing.verified && (
+                <span className={styles.verified} title="Personally inspected">
+                  <ShieldCheck size={13} strokeWidth={2.2} />
+                  Verified
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
@@ -56,6 +65,9 @@ export default function ProductCard({
             <span aria-hidden="true">&middot;</span>
             <span>{listing.location}</span>
           </div>
+          {isNew && listing.merchant_name && (
+            <p className={styles.merchant}>from {listing.merchant_name}</p>
+          )}
         </div>
       </Link>
     </motion.div>
