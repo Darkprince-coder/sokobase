@@ -34,7 +34,7 @@ const TRUST_ITEMS = [
 const MARKETPLACE_SECTIONS = [
   {
     icon: ShoppingBag,
-    title: "Secondhand Goods",
+    title: "Secondhand/ New Goods",
     text: "Phones, furniture, appliances and more, inspected before they're listed.",
     href: "/browse",
     live: true,
@@ -194,7 +194,7 @@ export default async function HomePage() {
         <section className={styles.section}>
           <div className="container">
             <Reveal>
-              <h2 className={styles.sectionTitle}>Browse secondhand categories</h2>
+              <h2 className={styles.sectionTitle}>Explore Marketplace</h2>
               <div className={styles.categoryRow}>
                 {categories.map((cat) => (
                   <Link
