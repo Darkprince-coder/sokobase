@@ -10,6 +10,7 @@ import WhatsAppLink from "./WhatsAppLink";
 
 const NAV_LINKS = [
   { href: "/browse", label: "Browse" },
+  { href: "/store", label: "Store" },
   { href: "/categories", label: "Categories" },
   { href: "/rentals", label: "Rentals" },
   { href: "/requests", label: "Requests" },

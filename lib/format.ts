@@ -29,3 +29,20 @@ export function inquireListingLink(title: string, url: string): string {
     `Hi SokoBase, I'm interested in "${title}" (${url}). Is it still available?`
   );
 }
+
+export function merchOrderLink(
+  productName: string,
+  size: string | null,
+  color: string | null,
+  price: number,
+  url: string
+): string {
+  const details = [size ? `Size: ${size}` : null, color ? `Color: ${color}` : null]
+    .filter(Boolean)
+    .join(", ");
+  return whatsappLink(
+    `Hi Hometown SokoBase, I'd like to order "${productName}"${
+      details ? ` (${details})` : ""
+    } — ${formatPrice(price)}. ${url}`
+  );
+}

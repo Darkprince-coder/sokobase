@@ -83,3 +83,37 @@ export interface Rental {
   created_at: string;
   updated_at: string;
 }
+
+export interface MerchCategory {
+  id: string;
+  name: string;
+  slug: string;
+  sort_order: number;
+}
+
+export interface MerchColor {
+  name: string;
+  hex: string;
+}
+
+export type MerchStatus = "active" | "inactive";
+
+export interface MerchProduct {
+  id: string;
+  category_id: string | null;
+  name: string;
+  slug: string;
+  description: string;
+  price: number;
+  images: string[];
+  sizes: string[];
+  colors: MerchColor[];
+  stock_count: number;
+  in_stock: boolean;
+  featured: boolean;
+  status: MerchStatus;
+  view_count: number;
+  created_at: string;
+  updated_at: string;
+  category?: MerchCategory | null;
+}
