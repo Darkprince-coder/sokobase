@@ -18,7 +18,7 @@ export default function MerchProductCard({ product, index = 0 }: { product: Merc
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.35, delay: Math.min(index, 6) * 0.04 }}
     >
-      <Link href={`/store/products/${product.slug}`} className={styles.card}>
+      <Link href={`/store/products/${product.slug}`} className={styles.card} data-sold-out={!product.in_stock}>
         <div className={styles.imageWrap}>
           {cover ? (
             <img src={cover} alt={product.name} className={styles.image} loading="lazy" />

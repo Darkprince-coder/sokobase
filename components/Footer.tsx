@@ -28,6 +28,7 @@ export default function Footer() {
           <h3 className={styles.heading}>Explore</h3>
           <ul className={styles.list}>
             <li><Link href="/browse">Browse listings</Link></li>
+            <li><Link href="/store">Hometown Store</Link></li>
             <li><Link href="/categories">Categories</Link></li>
             <li><Link href="/rentals">Rentals</Link></li>
             <li><Link href="/requests">Client requests</Link></li>

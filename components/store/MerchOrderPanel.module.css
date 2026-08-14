@@ -78,9 +78,11 @@
 
 .soldOutNotice {
   margin-top: var(--space-6);
-  background: var(--color-sage);
+  background: #f5f5f5;
   color: var(--color-charcoal);
   padding: var(--space-4);
   border-radius: var(--radius-md);
   text-align: center;
+  border: 2px solid #d0d0d0;
+  font-weight: 600;
 }
