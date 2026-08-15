@@ -31,7 +31,7 @@ export const revalidate = 60;
 // Set this once you have a real photo — e.g. "/hero/hero-bg.jpg" after
 // adding the file to /public/hero/. Leave undefined/empty and the hero
 // falls back to the gradient in HeroBackground.module.css automatically.
-const HERO_IMAGE_SRC = process.env.NEXT_PUBLIC_HERO_IMAGE_URL || "/hero/hero-bg.jpg";
+const HERO_IMAGE_SRC = process.env.NEXT_PUBLIC_HERO_IMAGE_URL || "/hero-bg.jpg";
 
 const TRUST_ITEMS = [
   { icon: ShieldCheck, label: "Verified", text: "We check listings and note their condition clearly before they go live." },
@@ -51,7 +51,7 @@ const MARKETPLACE_SECTIONS = [
   {
     icon: Shirt,
     title: "Hometown Store",
-    text: "Official Kimana Ndio branded merchandise — tees, hoodies, caps and more.",
+    text: "Official Kimana Ndio Hometown branded merchandise t-shirts, hoodies, jerseys and more.",
     href: "/store",
     live: true,
   },
@@ -476,7 +476,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {showTrustStats && (
+      {/* {showTrustStats && (
         <section className={styles.statsBand}>
           <Reveal className={`container ${styles.statsInner}`}>
             <div className={styles.statBlock}>
@@ -493,7 +493,7 @@ export default async function HomePage() {
             </div>
           </Reveal>
         </section>
-      )}
+      )} */}
 
       <section className={styles.ctaBand}>
         <Reveal className={`container ${styles.ctaInner}`}>
