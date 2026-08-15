@@ -1,0 +1,36 @@
+.wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* Always rendered first, underneath everything — this is what shows
+   if the photo never loads. A richer brand-toned gradient (not the
+   original pale tint) since the overlay + text now assume a darker
+   backdrop either way. */
+.fallback {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, var(--color-primary-dark) 0%, var(--color-charcoal) 100%);
+}
+
+.image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Dark overlay on top of either layer, so hero text is legible
+   whether or not the photo loaded. */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(20, 32, 27, 0.55) 0%,
+    rgba(20, 32, 27, 0.72) 100%
+  );
+}

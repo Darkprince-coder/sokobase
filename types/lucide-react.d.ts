@@ -34,6 +34,7 @@ declare module "lucide-react" {
   export const ShoppingBag: React.FC<LucideProps>;
   export const Car: React.FC<LucideProps>;
   export const Briefcase: React.FC<LucideProps>;
+  export const Shirt: React.FC<LucideProps>;
   export const Mountain: React.FC<LucideProps>;
   export const Users: React.FC<LucideProps>;
   export const Home: React.FC<LucideProps>;

@@ -12,17 +12,26 @@ import {
   Car,
   Briefcase,
   Mountain,
+  Shirt,
 } from "lucide-react";
 import styles from "./page.module.css";
 import ProductCard from "@/components/ProductCard";
+import MerchProductCard from "@/components/store/MerchProductCard";
 import WhatsAppLink from "@/components/WhatsAppLink";
 import Reveal from "@/components/motion/Reveal";
+import HeroBackground from "@/components/HeroBackground";
 import { getCategories, getFeaturedListings, getLatestListings, getNewItems } from "@/lib/listings";
 import { getOpenRequests, getTrustStats } from "@/lib/requests";
 import { getLatestRentals } from "@/lib/rentals";
+import { getFeaturedMerch } from "@/lib/merch";
 import { sellItemLink, requestItemLink, whatsappLink, formatPrice } from "@/lib/format";
 
 export const revalidate = 60;
+
+// Set this once you have a real photo — e.g. "/hero/hero-bg.jpg" after
+// adding the file to /public/hero/. Leave undefined/empty and the hero
+// falls back to the gradient in HeroBackground.module.css automatically.
+const HERO_IMAGE_SRC = process.env.NEXT_PUBLIC_HERO_IMAGE_URL || "/hero/hero-bg.jpg";
 
 const TRUST_ITEMS = [
   { icon: ShieldCheck, label: "Verified", text: "We check listings and note their condition clearly before they go live." },
@@ -37,6 +46,13 @@ const MARKETPLACE_SECTIONS = [
     title: "Secondhand/ New Goods",
     text: "Phones, furniture, appliances and more, inspected before they're listed.",
     href: "/browse",
+    live: true,
+  },
+  {
+    icon: Shirt,
+    title: "Hometown Store",
+    text: "Official Kimana Ndio branded merchandise — tees, hoodies, caps and more.",
+    href: "/store",
     live: true,
   },
   {
@@ -70,13 +86,14 @@ const MARKETPLACE_SECTIONS = [
 ];
 
 export default async function HomePage() {
-  const [categories, featured, latest, newItems, latestRentals, openRequests, trustStats] =
+  const [categories, featured, latest, newItems, latestRentals, featuredMerch, openRequests, trustStats] =
     await Promise.all([
       getCategories(),
       getFeaturedListings(6),
       getLatestListings(8),
       getNewItems(8),
       getLatestRentals(3),
+      getFeaturedMerch(4),
       getOpenRequests(3),
       getTrustStats(),
     ]);
@@ -95,7 +112,7 @@ export default async function HomePage() {
         url: "https://sokobase.co.ke",
         logo: "https://sokobase.co.ke/brand/logo-mark.svg",
         description:
-          "Hometown SokoBase is a local marketplace for secondhand and new goods and rentals, with every listing verified before it goes live.",
+          "Hometown SokoBase is a local marketplace for secondhand and new goods, rentals, and official Hometown merchandise, with every listing verified before it goes live.",
       },
       {
         "@type": "WebSite",
@@ -118,6 +135,7 @@ export default async function HomePage() {
       />
 
       <section className={styles.hero}>
+        <HeroBackground src={HERO_IMAGE_SRC} />
         <Reveal className={`container ${styles.heroInner}`}>
           <img
             src="/brand/logo-mark.svg"
@@ -126,12 +144,12 @@ export default async function HomePage() {
           />
           <span className={styles.eyebrow}>Your hometown marketplace</span>
           <h1 className={styles.headline}>
-            Buy, sell, and rent, <span>all in your hometown.</span>
+            Buy, sell, rent, <span>and represent your hometown.</span>
           </h1>
           <p className={styles.subhead}>
             Hometown SokoBase connects buyers and sellers across secondhand
-            and new goods and rentals, with every listing checked and every
-            deal handled with care.
+            and new goods, rentals, and official Hometown Store merchandise,
+            with every listing checked and every deal handled with care.
           </p>
 
           <form action="/browse" method="get" className={styles.search}>
@@ -251,9 +269,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* NEW — New Items section. Only renders once the admin has
-          posted at least one listing_type = "new" item, so it never
-          shows an empty/awkward section on a fresh install. */}
       {newItems.length > 0 && (
         <section className={styles.section}>
           <div className="container">
@@ -272,6 +287,33 @@ export default async function HomePage() {
             <div className={styles.grid}>
               {newItems.map((listing, i) => (
                 <ProductCard key={listing.id} listing={listing} index={i} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* NEW — Hometown Store featured section. Only renders once the
+          admin has featured at least one merch product, same pattern
+          as the New items section above. */}
+      {featuredMerch.length > 0 && (
+        <section className={styles.section}>
+          <div className="container">
+            <Reveal className={styles.sectionHead}>
+              <div>
+                <span className={styles.requestsEyebrow}>
+                  <Shirt size={14} strokeWidth={2.2} />
+                  Hometown Store
+                </span>
+                <h2 className={styles.sectionTitle}>Wear your hometown</h2>
+              </div>
+              <Link href="/store" className={styles.sectionLink}>
+                Shop all <ArrowRight size={14} strokeWidth={2.4} />
+              </Link>
+            </Reveal>
+            <div className={styles.grid}>
+              {featuredMerch.map((product, i) => (
+                <MerchProductCard key={product.id} product={product} index={i} />
               ))}
             </div>
           </div>
@@ -433,6 +475,25 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {showTrustStats && (
+        <section className={styles.statsBand}>
+          <Reveal className={`container ${styles.statsInner}`}>
+            <div className={styles.statBlock}>
+              <span className={styles.statNumber}>{trustStats.itemsSold}</span>
+              <span className={styles.statCaption}>Items sold</span>
+            </div>
+            <div className={styles.statBlock}>
+              <span className={styles.statNumber}>{trustStats.transactionsCompleted}</span>
+              <span className={styles.statCaption}>Transactions</span>
+            </div>
+            <div className={styles.statBlock}>
+              <span className={styles.statNumber}>{trustStats.satisfiedCustomers}</span>
+              <span className={styles.statCaption}>Happy customers</span>
+            </div>
+          </Reveal>
+        </section>
+      )}
 
       <section className={styles.ctaBand}>
         <Reveal className={`container ${styles.ctaInner}`}>
