@@ -39,28 +39,32 @@
   position: absolute;
   top: var(--space-2);
   left: var(--space-2);
-  right: var(--space-2);
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: flex-start;
   gap: var(--space-2);
+  z-index: 1;
 }
 
-/* Groups the type tag (New/Secondhand) and Verified badge on the right
-   side of the card so they wrap together instead of colliding with the
-   status badge on narrow cards. */
-.badgeRowRight {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
+.badgeBottomLeft {
+  position: absolute;
+  bottom: var(--space-2);
+  left: var(--space-2);
+  z-index: 1;
+}
+
+.badgeBottomRight {
+  position: absolute;
+  bottom: var(--space-2);
+  right: var(--space-2);
+  z-index: 1;
 }
 
 .newTag {
   display: inline-flex;
   align-items: center;
   gap: 3px;
-  background: var(--color-white);
+  background: rgba(255, 255, 255, 0.96);
   color: var(--color-ochre);
   font-family: var(--font-mono);
   font-size: var(--text-xs);
@@ -69,15 +73,14 @@
   letter-spacing: 0.03em;
   padding: 4px 10px;
   border-radius: 999px;
+  box-shadow: 0 1px 3px rgba(20, 32, 27, 0.08);
 }
 
-/* Mirrors .newTag but in a muted neutral tone so New and Secondhand read
-   as two states of the same tag, not two different kinds of badge. */
 .secondhandTag {
   display: inline-flex;
   align-items: center;
   gap: 3px;
-  background: var(--color-white);
+  background: rgba(255, 255, 255, 0.96);
   color: #5b655e;
   font-family: var(--font-mono);
   font-size: var(--text-xs);
@@ -87,6 +90,7 @@
   padding: 4px 10px;
   border-radius: 999px;
   border: 1px solid var(--color-sage);
+  box-shadow: 0 1px 3px rgba(20, 32, 27, 0.08);
 }
 
 .verified {
@@ -100,6 +104,7 @@
   font-weight: 600;
   padding: 4px 10px;
   border-radius: 999px;
+  border: 1px solid var(--color-sage);
 }
 
 .body {

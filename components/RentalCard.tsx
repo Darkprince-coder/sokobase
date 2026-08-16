@@ -19,7 +19,7 @@ export default function RentalCard({
   const isRented = rental.status === "rented";
 
   return (
-    <motion.div
+    <motion.div className={styles.cardWrap}
       initial={shouldReduceMotion ? undefined : { opacity: 0, y: 14 }}
       whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}

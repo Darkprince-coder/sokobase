@@ -39,30 +39,29 @@ export default function ProductCard({
             </div>
           )}
           <div className={styles.badgeRow}>
-            <StatusBadge status={listing.status} />
-            <div className={styles.badgeRowRight}>
-              {/* Every card always shows exactly one type tag (New or
-                  Secondhand), so buyers can tell at a glance without the
-                  badge corner getting crowded — same slot either way. */}
-              {isNew ? (
-                <span className={styles.newTag}>
-                  <Sparkles size={12} strokeWidth={2.4} />
-                  New
-                </span>
-              ) : (
-                <span className={styles.secondhandTag}>
-                  <Tag size={12} strokeWidth={2.4} />
-                  Secondhand
-                </span>
-              )}
-              {listing.verified && (
-                <span className={styles.verified} title="Personally inspected">
-                  <ShieldCheck size={13} strokeWidth={2.2} />
-                  Verified
-                </span>
-              )}
-            </div>
+            {isNew ? (
+              <span className={styles.newTag}>
+                <Sparkles size={12} strokeWidth={2.4} />
+                New
+              </span>
+            ) : (
+              <span className={styles.secondhandTag}>
+                <Tag size={12} strokeWidth={2.4} />
+                Secondhand
+              </span>
+            )}
           </div>
+          <div className={styles.badgeBottomLeft}>
+            <StatusBadge status={listing.status} />
+          </div>
+          {listing.verified && (
+            <div className={styles.badgeBottomRight}>
+              <span className={styles.verified} title="Personally inspected">
+                <ShieldCheck size={13} strokeWidth={2.2} />
+                Verified
+              </span>
+            </div>
+          )}
         </div>
 
         <div className={styles.body}>
