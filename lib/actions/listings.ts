@@ -13,6 +13,15 @@ function parseImages(raw: string): string[] {
     .filter(Boolean);
 }
 
+// New items are always "as-new" from the merchant, so the condition field
+// is hidden in the admin form for listing_type = "new" and forced to
+// "New" here — this is enforced server-side too, not just in the UI, so
+// the data stays correct even if the hidden field is ever missing.
+function resolveCondition(listingType: ListingType, formData: FormData): Condition {
+  if (listingType === "new") return "New";
+  return String(formData.get("condition") || "Good") as Condition;
+}
+
 export async function createListing(formData: FormData) {
   const supabase = createAuthedServerClient();
 
@@ -23,6 +32,7 @@ export async function createListing(formData: FormData) {
 
   const listingType = String(formData.get("listing_type") || "secondhand") as ListingType;
   const merchantName = String(formData.get("merchant_name") || "").trim();
+  const condition = resolveCondition(listingType, formData);
 
   const { data: listing, error } = await supabase
     .from("listings")
@@ -31,7 +41,7 @@ export async function createListing(formData: FormData) {
       slug,
       description: String(formData.get("description") || ""),
       price: Number(formData.get("price") || 0),
-      condition: String(formData.get("condition") || "Good") as Condition,
+      condition,
       location: String(formData.get("location") || "Kimana"),
       category_id: String(formData.get("category_id") || "") || null,
       images: parseImages(String(formData.get("images") || "")),
@@ -77,6 +87,7 @@ export async function updateListing(id: string, formData: FormData) {
 
   const listingType = String(formData.get("listing_type") || "secondhand") as ListingType;
   const merchantName = String(formData.get("merchant_name") || "").trim();
+  const condition = resolveCondition(listingType, formData);
 
   const { error } = await supabase
     .from("listings")
@@ -85,7 +96,7 @@ export async function updateListing(id: string, formData: FormData) {
       slug,
       description: String(formData.get("description") || ""),
       price: Number(formData.get("price") || 0),
-      condition: String(formData.get("condition") || "Good") as Condition,
+      condition,
       location: String(formData.get("location") || "Kimana"),
       category_id: String(formData.get("category_id") || "") || null,
       images: parseImages(String(formData.get("images") || "")),

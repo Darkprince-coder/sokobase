@@ -16,22 +16,27 @@ import {
 } from "lucide-react";
 import styles from "./page.module.css";
 import ProductCard from "@/components/ProductCard";
+import RentalCard from "@/components/RentalCard";
 import MerchProductCard from "@/components/store/MerchProductCard";
 import WhatsAppLink from "@/components/WhatsAppLink";
 import Reveal from "@/components/motion/Reveal";
 import HeroBackground from "@/components/HeroBackground";
-import { getCategories, getFeaturedListings, getLatestListings, getNewItems } from "@/lib/listings";
+import { getCategories, getNewItems, getSecondhandItems } from "@/lib/listings";
 import { getOpenRequests, getTrustStats } from "@/lib/requests";
-import { getLatestRentals } from "@/lib/rentals";
+import { getFeaturedRentals } from "@/lib/rentals";
 import { getFeaturedMerch } from "@/lib/merch";
 import { sellItemLink, requestItemLink, whatsappLink, formatPrice } from "@/lib/format";
 
 export const revalidate = 60;
 
-// Set this once you have a real photo — e.g. "/hero/hero-bg.jpg" after
-// adding the file to /public/hero/. Leave undefined/empty and the hero
-// falls back to the gradient in HeroBackground.module.css automatically.
+// Set these once you have real photos — e.g. "/hero-bg.jpg" after adding
+// the file to /public/. Leave the default filename in place (or set the
+// env var) and each section falls back to its gradient automatically if
+// the image is missing or fails to load — see HeroBackground.tsx.
 const HERO_IMAGE_SRC = process.env.NEXT_PUBLIC_HERO_IMAGE_URL || "/hero-bg.jpg";
+const STORE_IMAGE_SRC = process.env.NEXT_PUBLIC_STORE_IMAGE_URL || "/store-bg.jpeg";
+const RENTALS_IMAGE_SRC = process.env.NEXT_PUBLIC_RENTALS_IMAGE_URL || "/rentals-bg.jpg";
+const REQUESTS_IMAGE_SRC = process.env.NEXT_PUBLIC_REQUESTS_IMAGE_URL || "/requests-bg.jpg";
 
 const TRUST_ITEMS = [
   { icon: ShieldCheck, label: "Verified", text: "We check listings and note their condition clearly before they go live." },
@@ -86,22 +91,16 @@ const MARKETPLACE_SECTIONS = [
 ];
 
 export default async function HomePage() {
-  const [categories, featured, latest, newItems, latestRentals, featuredMerch, openRequests, trustStats] =
+  const [categories, newItems, secondhandItems, featuredRentals, featuredMerch, openRequests, trustStats] =
     await Promise.all([
       getCategories(),
-      getFeaturedListings(6),
-      getLatestListings(8),
-      getNewItems(8),
-      getLatestRentals(3),
+      getNewItems(4),
+      getSecondhandItems(4),
+      getFeaturedRentals(4),
       getFeaturedMerch(4),
-      getOpenRequests(3),
+      getOpenRequests(4),
       getTrustStats(),
     ]);
-
-  const showTrustStats =
-    trustStats.itemsSold > 0 ||
-    trustStats.transactionsCompleted > 0 ||
-    trustStats.satisfiedCustomers > 0;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -229,17 +228,39 @@ export default async function HomePage() {
         </section>
       )}
 
+      {/* New goods */}
       <section className={styles.section}>
         <div className="container">
           <Reveal className={styles.sectionHead}>
-            <h2 className={styles.sectionTitle}>Featured</h2>
-            <Link href="/browse" className={styles.sectionLink}>
-              View all <ArrowRight size={14} strokeWidth={2.4} />
+            <h2 className={styles.sectionTitle}>New goods</h2>
+            <Link href="/browse?type=new" className={styles.sectionLink}>
+              View all new goods <ArrowRight size={14} strokeWidth={2.4} />
             </Link>
           </Reveal>
-          {featured.length > 0 ? (
+          {newItems.length > 0 ? (
             <div className={styles.grid}>
-              {featured.map((listing, i) => (
+              {newItems.map((listing, i) => (
+                <ProductCard key={listing.id} listing={listing} index={i} />
+              ))}
+            </div>
+          ) : (
+            <p className={styles.empty}>New items coming soon.</p>
+          )}
+        </div>
+      </section>
+
+      {/* Secondhand goods */}
+      <section className={styles.section}>
+        <div className="container">
+          <Reveal className={styles.sectionHead}>
+            <h2 className={styles.sectionTitle}>Secondhand goods</h2>
+            <Link href="/browse?type=secondhand" className={styles.sectionLink}>
+              View all secondhand <ArrowRight size={14} strokeWidth={2.4} />
+            </Link>
+          </Reveal>
+          {secondhandItems.length > 0 ? (
+            <div className={styles.grid}>
+              {secondhandItems.map((listing, i) => (
                 <ProductCard key={listing.id} listing={listing} index={i} />
               ))}
             </div>
@@ -249,173 +270,161 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className={styles.section}>
-        <div className="container">
-          <Reveal className={styles.sectionHead}>
-            <h2 className={styles.sectionTitle}>Just listed</h2>
-            <Link href="/browse" className={styles.sectionLink}>
-              View all <ArrowRight size={14} strokeWidth={2.4} />
-            </Link>
-          </Reveal>
-          {latest.length > 0 ? (
-            <div className={styles.grid}>
-              {latest.map((listing, i) => (
-                <ProductCard key={listing.id} listing={listing} index={i} />
-              ))}
+      {/* Hometown Store — intro band with photo, then featured products */}
+      <section className={`${styles.section} ${styles.band}`}>
+        <HeroBackground src={STORE_IMAGE_SRC} />
+        <div className={`container ${styles.bandInner}`}>
+          <Reveal>
+            <span className={styles.bandEyebrow}>
+              <Shirt size={14} strokeWidth={2.2} />
+              Kimana Ndio Hometown
+            </span>
+            <h2 className={styles.bandTitle}>Wear your hometown, wherever you go</h2>
+            <p className={styles.bandText}>
+              Kimana Ndio Hometown is our own line of official merchandise
+              t-shirts, sweatshirts, jerseys and more, made for anyone proud to
+              represent where they&rsquo;re from. Every piece is quality
+              checked before it leaves our store, straight to your wardrobe.
+            </p>
+            <div className={styles.bandActions}>
+              <Link href="/store" className={styles.bandCta}>
+                <Shirt size={16} strokeWidth={2.2} />
+                Shop from our store
+              </Link>
             </div>
-          ) : (
-            <p className={styles.empty}>New listings coming soon.</p>
-          )}
+          </Reveal>
         </div>
       </section>
 
-      {newItems.length > 0 && (
-        <section className={styles.section}>
-          <div className="container">
-            <Reveal className={styles.sectionHead}>
-              <div>
-                <span className={styles.requestsEyebrow}>
-                  <Sparkles size={14} strokeWidth={2.2} />
-                  New items
-                </span>
-                <h2 className={styles.sectionTitle}>Fresh from our merchant partners</h2>
-              </div>
-              <Link href="/browse?type=new" className={styles.sectionLink}>
-                View all <ArrowRight size={14} strokeWidth={2.4} />
-              </Link>
-            </Reveal>
-            <div className={styles.grid}>
-              {newItems.map((listing, i) => (
-                <ProductCard key={listing.id} listing={listing} index={i} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* NEW — Hometown Store featured section. Only renders once the
-          admin has featured at least one merch product, same pattern
-          as the New items section above. */}
-      {featuredMerch.length > 0 && (
-        <section className={styles.section}>
-          <div className="container">
-            <Reveal className={styles.sectionHead}>
-              <div>
-                <span className={styles.requestsEyebrow}>
-                  <Shirt size={14} strokeWidth={2.2} />
-                  Hometown Store
-                </span>
-                <h2 className={styles.sectionTitle}>Wear your hometown</h2>
-              </div>
-              <Link href="/store" className={styles.sectionLink}>
-                Shop all <ArrowRight size={14} strokeWidth={2.4} />
-              </Link>
-            </Reveal>
+      <section className={styles.section}>
+        <div className="container">
+          <Reveal className={styles.sectionHead}>
+            <h2 className={styles.sectionTitle}>Featured from Hometown Store</h2>
+            <Link href="/store" className={styles.sectionLink}>
+              Shop all <ArrowRight size={14} strokeWidth={2.4} />
+            </Link>
+          </Reveal>
+          {featuredMerch.length > 0 ? (
             <div className={styles.grid}>
               {featuredMerch.map((product, i) => (
                 <MerchProductCard key={product.id} product={product} index={i} />
               ))}
             </div>
+          ) : (
+            <p className={styles.empty}>Add a featured product from the admin dashboard.</p>
+          )}
+        </div>
+      </section>
+
+      {/* Rentals — intro band with photo, then featured rentals */}
+      <section className={`${styles.section} ${styles.band}`}>
+        <HeroBackground src={RENTALS_IMAGE_SRC} />
+        <div className={`container ${styles.bandInner}`}>
+          <Reveal>
+            <span className={styles.bandEyebrow}>
+              <HomeIcon size={14} strokeWidth={2.2} />
+              Rentals
+            </span>
+            <h2 className={styles.bandTitle}>Looking for a place?</h2>
+            <p className={styles.bandText}>
+              Homes and business premises for rent, with real photos and
+              clear pricing. Electricity, water, and distance to town,
+              listed upfront so there are no surprises when you show up.
+            </p>
+            <div className={styles.bandActions}>
+              <Link href="/rentals" className={styles.bandCta}>
+                <HomeIcon size={16} strokeWidth={2.2} />
+                Browse rentals
+              </Link>
+              <WhatsAppLink
+                href={whatsappLink("Hi Hometown SokoBase, I have a property I'd like to list for rent.")}
+                label="home_rentals_list"
+                className={styles.bandLink}
+              >
+                List a property <ArrowRight size={14} strokeWidth={2.4} />
+              </WhatsAppLink>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <div className="container">
+          <Reveal className={styles.sectionHead}>
+            <h2 className={styles.sectionTitle}>Featured rentals</h2>
+            <Link href="/rentals" className={styles.sectionLink}>
+              View all <ArrowRight size={14} strokeWidth={2.4} />
+            </Link>
+          </Reveal>
+          {featuredRentals.length > 0 ? (
+            <div className={styles.grid}>
+              {featuredRentals.map((rental, i) => (
+                <RentalCard key={rental.id} rental={rental} index={i} />
+              ))}
+            </div>
+          ) : (
+            <p className={styles.empty}>New rentals coming soon.</p>
+          )}
+        </div>
+      </section>
+
+      {/* Client requests — intro band with photo, then open requests */}
+      <section className={`${styles.section} ${styles.band}`}>
+        <HeroBackground src={REQUESTS_IMAGE_SRC} />
+        <div className={`container ${styles.bandInner}`}>
+          <Reveal>
+            <span className={styles.bandEyebrow}>
+              <Sparkles size={14} strokeWidth={2.2} />
+              Looking for something?
+            </span>
+            <h2 className={styles.bandTitle}>Can&rsquo;t find what you need?</h2>
+            <p className={styles.bandText}>
+              Tell us what you&rsquo;re looking for and a budget if you have
+              one. We&rsquo;ll keep an eye out and message you when we find
+              a match.
+            </p>
+            <div className={styles.bandActions}>
+              <WhatsAppLink
+                href={requestItemLink()}
+                label="home_request_button"
+                className={styles.bandCta}
+              >
+                <MessageCircle size={16} strokeWidth={2.2} />
+                Tell us what you&rsquo;re looking for
+              </WhatsAppLink>
+              <Link href="/requests" className={styles.bandLink}>
+                See all requests <ArrowRight size={14} strokeWidth={2.4} />
+              </Link>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {openRequests.length > 0 && (
+        <section className={styles.section}>
+          <div className="container">
+            <Reveal className={styles.sectionHead}>
+              <h2 className={styles.sectionTitle}>Recent requests</h2>
+              <Link href="/requests" className={styles.sectionLink}>
+                See all <ArrowRight size={14} strokeWidth={2.4} />
+              </Link>
+            </Reveal>
+            <div className={styles.requestsGridCards}>
+              {openRequests.map((req) => (
+                <div key={req.id} className={styles.requestCard}>
+                  <span className={styles.requestBadge}>Wanted</span>
+                  <p className={styles.requestTitle}>{req.product_title}</p>
+                  {req.budget != null && (
+                    <p className={`price-tag ${styles.requestBudget}`}>
+                      Budget: {formatPrice(req.budget)}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </section>
       )}
-
-      <section className={`${styles.section} ${styles.requestsSection}`}>
-        <div className="container">
-          <Reveal className={styles.requestsInner}>
-            <div>
-              <span className={styles.requestsEyebrow}>
-                <HomeIcon size={14} strokeWidth={2.2} />
-                Rentals
-              </span>
-              <h2 className={styles.sectionTitle}>Looking for a place?</h2>
-              <p className={styles.requestsText}>
-                Homes and business premises for rent, with real photos and
-                clear pricing. Electricity, water, and distance to town,
-                listed upfront.
-              </p>
-              <div className={styles.requestsActions}>
-                <Link href="/rentals" className={styles.requestsCta}>
-                  <HomeIcon size={16} strokeWidth={2.2} />
-                  Browse rentals
-                </Link>
-                <WhatsAppLink
-                  href={whatsappLink("Hi Hometown SokoBase, I have a property I'd like to list for rent.")}
-                  label="home_rentals_list"
-                  className={styles.requestsLink}
-                >
-                  List a property <ArrowRight size={14} strokeWidth={2.4} />
-                </WhatsAppLink>
-              </div>
-            </div>
-
-            {latestRentals.length > 0 && (
-              <div className={styles.requestsList}>
-                {latestRentals.map((rental) => (
-                  <Link
-                    key={rental.id}
-                    href={`/rentals/${rental.slug}`}
-                    className={styles.requestCard}
-                  >
-                    <span className={styles.requestBadge}>{rental.house_type}</span>
-                    <p className={styles.requestTitle}>{rental.title}</p>
-                    <p className={`price-tag ${styles.requestBudget}`}>
-                      {formatPrice(rental.monthly_rent)}/mo
-                    </p>
-                  </Link>
-                ))}
-              </div>
-            )}
-          </Reveal>
-        </div>
-      </section>
-
-      <section className={`${styles.section} ${styles.requestsSection}`}>
-        <div className="container">
-          <Reveal className={styles.requestsInner}>
-            <div>
-              <span className={styles.requestsEyebrow}>
-                <Sparkles size={14} strokeWidth={2.2} />
-                Looking for something?
-              </span>
-              <h2 className={styles.sectionTitle}>Can&rsquo;t find what you need?</h2>
-              <p className={styles.requestsText}>
-                Tell us what you&rsquo;re looking for and we&rsquo;ll help
-                you find it. See what other buyers are asking for below.
-              </p>
-              <div className={styles.requestsActions}>
-                <WhatsAppLink
-                  href={requestItemLink()}
-                  label="home_request_button"
-                  className={styles.requestsCta}
-                >
-                  <MessageCircle size={16} strokeWidth={2.2} />
-                  Tell us what you're looking for
-                </WhatsAppLink>
-                <Link href="/requests" className={styles.requestsLink}>
-                  See all requests <ArrowRight size={14} strokeWidth={2.4} />
-                </Link>
-              </div>
-            </div>
-
-            {openRequests.length > 0 && (
-              <div className={styles.requestsList}>
-                {openRequests.map((req) => (
-                  <div key={req.id} className={styles.requestCard}>
-                    <span className={styles.requestBadge}>Wanted</span>
-                    <p className={styles.requestTitle}>{req.product_title}</p>
-                    {req.budget != null && (
-                      <p className={`price-tag ${styles.requestBudget}`}>
-                        Budget: {formatPrice(req.budget)}
-                      </p>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
-          </Reveal>
-        </div>
-      </section>
 
       <section className={`${styles.section} ${styles.howSection}`}>
         <div className="container">
@@ -475,25 +484,6 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* {showTrustStats && (
-        <section className={styles.statsBand}>
-          <Reveal className={`container ${styles.statsInner}`}>
-            <div className={styles.statBlock}>
-              <span className={styles.statNumber}>{trustStats.itemsSold}</span>
-              <span className={styles.statCaption}>Items sold</span>
-            </div>
-            <div className={styles.statBlock}>
-              <span className={styles.statNumber}>{trustStats.transactionsCompleted}</span>
-              <span className={styles.statCaption}>Transactions</span>
-            </div>
-            <div className={styles.statBlock}>
-              <span className={styles.statNumber}>{trustStats.satisfiedCustomers}</span>
-              <span className={styles.statCaption}>Happy customers</span>
-            </div>
-          </Reveal>
-        </section>
-      )} */}
 
       <section className={styles.ctaBand}>
         <Reveal className={`container ${styles.ctaInner}`}>

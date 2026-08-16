@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { ShieldCheck, ImageOff, Sparkles } from "lucide-react";
+import { ShieldCheck, ImageOff, Sparkles, Tag } from "lucide-react";
 import styles from "./ProductCard.module.css";
 import StatusBadge from "./StatusBadge";
 import { formatPrice } from "@/lib/format";
@@ -41,10 +41,18 @@ export default function ProductCard({
           <div className={styles.badgeRow}>
             <StatusBadge status={listing.status} />
             <div className={styles.badgeRowRight}>
-              {isNew && (
+              {/* Every card always shows exactly one type tag (New or
+                  Secondhand), so buyers can tell at a glance without the
+                  badge corner getting crowded — same slot either way. */}
+              {isNew ? (
                 <span className={styles.newTag}>
                   <Sparkles size={12} strokeWidth={2.4} />
                   New
+                </span>
+              ) : (
+                <span className={styles.secondhandTag}>
+                  <Tag size={12} strokeWidth={2.4} />
+                  Secondhand
                 </span>
               )}
               {listing.verified && (
@@ -61,8 +69,10 @@ export default function ProductCard({
           <p className={`price-tag ${styles.price}`}>{formatPrice(listing.price)}</p>
           <h3 className={styles.title}>{listing.title}</h3>
           <div className={styles.meta}>
-            <span>{listing.condition}</span>
-            <span aria-hidden="true">&middot;</span>
+            {/* Condition is only meaningful for secondhand items — new
+                items are always "New", which the tag above already says. */}
+            {!isNew && <span>{listing.condition}</span>}
+            {!isNew && <span aria-hidden="true">&middot;</span>}
             <span>{listing.location}</span>
           </div>
           {isNew && listing.merchant_name && (

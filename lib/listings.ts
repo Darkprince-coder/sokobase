@@ -49,7 +49,7 @@ export async function getLatestListings(limit = 8): Promise<Listing[]> {
   return (data as unknown as Listing[]) ?? [];
 }
 
-// NEW: admin-posted new products, for the homepage "New Items" section.
+// Admin-posted new products, for the homepage "New goods" section.
 export async function getNewItems(limit = 8): Promise<Listing[]> {
   const supabase = createServerSupabase();
   const { data, error } = await supabase
@@ -67,10 +67,29 @@ export async function getNewItems(limit = 8): Promise<Listing[]> {
   return (data as unknown as Listing[]) ?? [];
 }
 
+// NEW: secondhand marketplace items, for the homepage "Secondhand goods"
+// section — mirrors getNewItems but filtered the other way.
+export async function getSecondhandItems(limit = 8): Promise<Listing[]> {
+  const supabase = createServerSupabase();
+  const { data, error } = await supabase
+    .from("listings")
+    .select(LISTING_SELECT)
+    .eq("listing_type", "secondhand")
+    .neq("status", "sold")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  if (error) {
+    console.error("getSecondhandItems error:", error.message);
+    return [];
+  }
+  return (data as unknown as Listing[]) ?? [];
+}
+
 export interface BrowseFilters {
   category?: string; // category slug
   condition?: string;
-  type?: ListingType; // NEW — "secondhand" | "new"
+  type?: ListingType; // "secondhand" | "new"
   minPrice?: number;
   maxPrice?: number;
   q?: string; // search term against title
