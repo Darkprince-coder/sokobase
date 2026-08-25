@@ -52,13 +52,12 @@ export default function ProductCard({
             )}
           </div>
           <div className={styles.badgeBottomLeft}>
-            <StatusBadge status={listing.status} />
+            <StatusBadge status={listing.status} showLabel={false} />
           </div>
           {listing.verified && (
             <div className={styles.badgeBottomRight}>
-              <span className={styles.verified} title="Personally inspected">
+              <span className={styles.verified} title="Personally inspected" aria-label="Personally inspected">
                 <ShieldCheck size={13} strokeWidth={2.2} />
-                Verified
               </span>
             </div>
           )}

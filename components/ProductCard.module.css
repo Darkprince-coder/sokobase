@@ -107,13 +107,16 @@
 .verified {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  padding: 0;
   background: var(--color-white);
   color: var(--color-primary-dark);
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   font-weight: 600;
-  padding: 4px 10px;
   border-radius: 999px;
   border: 1px solid var(--color-sage);
 }
