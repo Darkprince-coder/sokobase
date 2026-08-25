@@ -203,12 +203,22 @@
 }
 
 /* ---- Listings / rentals / merch grid — mobile-first: 2 cols on the
-   smallest screens (so cards never overflow), scaling up with room. ---- */
+   smallest screens (so cards never overflow), scaling up with room. ----
+   `.grid > *` forces every card (ProductCard/RentalCard/MerchProductCard,
+   each rendered as an unstyled motion.div) to respect its grid track
+   instead of stretching to the intrinsic width of the image inside it —
+   that mismatch was what let one tall/wide product photo blow the whole
+   row out and put a horizontal scrollbar on the page. */
 .grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--space-4);
   min-width: 0;
+}
+
+.grid > * {
+  min-width: 0;
+  max-width: 100%;
 }
 
 /* ---- How it works ---- */
@@ -476,12 +486,18 @@
   font-size: var(--text-sm);
 }
 
-/* ---- Marketplace tiles ---- */
+/* ---- Marketplace tiles ----
+   Mobile-first: a horizontally-scrollable row (like .categoryRow) instead
+   of stacking every tile full-width on top of each other. From 640px up,
+   where there's room, it becomes the original 3-column grid. */
 .marketplaceGrid {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
   gap: var(--space-4);
   margin-top: var(--space-6);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+  padding-bottom: var(--space-2);
 }
 
 .marketplaceTile,
@@ -495,6 +511,9 @@
   border-radius: var(--radius-lg);
   padding: var(--space-6);
   position: relative;
+  flex: 0 0 auto;
+  width: 240px;
+  scroll-snap-align: start;
 }
 
 .marketplaceTile:hover {
@@ -540,12 +559,12 @@
 
 @media (min-width: 640px) {
   .marketplaceGrid {
+    display: grid;
     grid-template-columns: repeat(3, 1fr);
+    overflow-x: visible;
   }
-}
-
-@media (min-width: 1024px) {
-  .marketplaceGrid {
-    grid-template-columns: repeat(3, 1fr);
+  .marketplaceTile,
+  .marketplaceTileSoon {
+    width: auto;
   }
 }
