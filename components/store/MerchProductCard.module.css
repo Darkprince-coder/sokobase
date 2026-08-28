@@ -1,5 +1,7 @@
 .card {
   display: block;
+  width: 100%;
+  min-width: 0;
   background: var(--color-white);
   border-radius: var(--radius-lg);
   overflow: hidden;
@@ -24,6 +26,8 @@
   position: relative;
   aspect-ratio: 4 / 3;
   background: var(--color-sage);
+  width: 100%;
+  min-width: 0;
 }
 
 .image {
@@ -60,6 +64,7 @@
 
 .body {
   padding: var(--space-3) var(--space-4) var(--space-4);
+  min-width: 0;
 }
 
 .price {
