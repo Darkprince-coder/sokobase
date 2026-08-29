@@ -61,9 +61,9 @@ export default async function BrowsePage({ searchParams }: BrowsePageProps) {
       <section className={styles.hero}>
         <HeroBackground src={BROWSE_HERO_IMAGE} />
         <div className={`container ${styles.heroInner}`}>
-          <h1 className={styles.heroTitle}>All listings</h1>
+          <h1 className={styles.heroTitle}>Shop With Us</h1>
           <p className={styles.heroSubtitle}>
-            {listings.length} item{listings.length === 1 ? "" : "s"} &middot; new goods and
+            {/* {listings.length} item{listings.length === 1 ? "" : "s"} &middot; */} new goods and
             secondhand finds, all in one place
           </p>
 
