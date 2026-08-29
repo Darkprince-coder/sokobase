@@ -13,6 +13,29 @@ function parseImages(raw: string): string[] {
     .filter(Boolean);
 }
 
+function parseSizes(raw: string): string[] {
+  return raw
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+function parseColors(formData: FormData): { name: string; hex: string }[] {
+  const names = formData.getAll("color_name") as string[];
+  const hexes = formData.getAll("color_hex") as string[];
+  return names
+    .map((name, i) => ({ name: name.trim(), hex: (hexes[i] || "#14201b").trim() }))
+    .filter((c) => c.name);
+}
+
+function parseSpecs(formData: FormData): { label: string; value: string }[] {
+  const labels = formData.getAll("spec_label") as string[];
+  const values = formData.getAll("spec_value") as string[];
+  return labels
+    .map((label, i) => ({ label: label.trim(), value: (values[i] || "").trim() }))
+    .filter((s) => s.label);
+}
+
 // New items are always "as-new" from the merchant, so the condition field
 // is hidden in the admin form for listing_type = "new" and forced to
 // "New" here — this is enforced server-side too, not just in the UI, so
@@ -33,6 +56,7 @@ export async function createListing(formData: FormData) {
   const listingType = String(formData.get("listing_type") || "secondhand") as ListingType;
   const merchantName = String(formData.get("merchant_name") || "").trim();
   const condition = resolveCondition(listingType, formData);
+  const compareAtPriceRaw = formData.get("compare_at_price");
 
   const { data: listing, error } = await supabase
     .from("listings")
@@ -41,10 +65,15 @@ export async function createListing(formData: FormData) {
       slug,
       description: String(formData.get("description") || ""),
       price: Number(formData.get("price") || 0),
+      compare_at_price: compareAtPriceRaw ? Number(compareAtPriceRaw) : null,
+      badge: String(formData.get("badge") || "").trim() || null,
       condition,
       location: String(formData.get("location") || "Kimana"),
       category_id: String(formData.get("category_id") || "") || null,
       images: parseImages(String(formData.get("images") || "")),
+      specs: listingType === "new" ? parseSpecs(formData) : [],
+      sizes: parseSizes(String(formData.get("sizes") || "")),
+      colors: parseColors(formData),
       featured: formData.get("featured") === "on",
       verified: formData.get("verified") !== "off",
       status: "available" as ListingStatus,
@@ -88,6 +117,7 @@ export async function updateListing(id: string, formData: FormData) {
   const listingType = String(formData.get("listing_type") || "secondhand") as ListingType;
   const merchantName = String(formData.get("merchant_name") || "").trim();
   const condition = resolveCondition(listingType, formData);
+  const compareAtPriceRaw = formData.get("compare_at_price");
 
   const { error } = await supabase
     .from("listings")
@@ -96,10 +126,15 @@ export async function updateListing(id: string, formData: FormData) {
       slug,
       description: String(formData.get("description") || ""),
       price: Number(formData.get("price") || 0),
+      compare_at_price: compareAtPriceRaw ? Number(compareAtPriceRaw) : null,
+      badge: String(formData.get("badge") || "").trim() || null,
       condition,
       location: String(formData.get("location") || "Kimana"),
       category_id: String(formData.get("category_id") || "") || null,
       images: parseImages(String(formData.get("images") || "")),
+      specs: listingType === "new" ? parseSpecs(formData) : [],
+      sizes: parseSizes(String(formData.get("sizes") || "")),
+      colors: parseColors(formData),
       featured: formData.get("featured") === "on",
       verified: formData.get("verified") !== "off",
       listing_type: listingType,

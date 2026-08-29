@@ -1,0 +1,104 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  margin-top: var(--space-6);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b756e;
+}
+
+.sizeRow {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.sizeButton {
+  min-width: 44px;
+  padding: var(--space-2) var(--space-3);
+  border: 1.5px solid var(--color-sage);
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.sizeButton[data-active="true"] {
+  border-color: var(--color-primary);
+  color: var(--color-primary-dark);
+  background: var(--color-primary-tint);
+}
+
+.colorRow {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.colorSwatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--color-white);
+  box-shadow: 0 0 0 1.5px var(--color-sage);
+  cursor: pointer;
+}
+
+.colorSwatch[data-active="true"] {
+  box-shadow: 0 0 0 2px var(--color-primary);
+}
+
+/* Sticky so the CTA stays reachable without hunting for it on long
+   descriptions/specs — especially useful on mobile where the info
+   column can run well past the viewport height. */
+.stickyBar {
+  position: sticky;
+  bottom: var(--space-4);
+  z-index: 5;
+  margin-top: var(--space-2);
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  background: var(--color-primary);
+  color: var(--color-white);
+  font-weight: 600;
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-raised);
+}
+
+.cta:hover {
+  background: var(--color-primary-dark);
+}
+
+.unavailable {
+  margin-top: var(--space-6);
+  background: var(--color-sage);
+  color: var(--color-charcoal);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.unavailable a {
+  color: var(--color-primary-dark);
+  font-weight: 600;
+  text-decoration: underline;
+}

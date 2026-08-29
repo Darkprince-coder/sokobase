@@ -22,12 +22,16 @@ const ICONS: Record<ListingStatus, typeof CircleCheck> = {
 export default function StatusBadge({
   status,
   showLabel = true,
+  soldLabel,
 }: {
   status: ListingStatus;
   showLabel?: boolean;
+  // NEW — lets callers say "Sold out" instead of "Sold" for dropshipped
+  // new items, while secondhand items keep the plain "Sold" wording.
+  soldLabel?: string;
 }) {
   const Icon = ICONS[status];
-  const label = LABELS[status];
+  const label = status === "sold" && soldLabel ? soldLabel : LABELS[status];
 
   return (
     <span

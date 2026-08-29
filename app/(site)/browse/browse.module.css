@@ -1,24 +1,82 @@
-.header {
-  padding-top: var(--space-8);
+/* ---- Hero ---- */
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-12) 0 var(--space-10);
 }
 
-.title {
+.heroInner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.heroTitle {
   font-size: var(--text-3xl);
-  color: var(--color-charcoal);
+  color: var(--color-white);
 }
 
-.subtitle {
-  margin-top: var(--space-2);
-  color: #6b756e;
+.heroSubtitle {
+  color: #d7ded9;
   font-size: var(--text-sm);
+  max-width: 52ch;
 }
 
-/* NEW — Secondhand / New items tabs, same pattern as the Rentals
-   category tabs in app/(site)/rentals/rentals.module.css */
+.heroSearch {
+  display: flex;
+  width: 100%;
+  max-width: 560px;
+  margin-top: var(--space-2);
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-2);
+  gap: var(--space-2);
+}
+
+.heroSearchInput {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-base);
+  font-family: var(--font-body);
+  color: var(--color-charcoal);
+  min-width: 0;
+}
+
+.heroSearchInput:focus {
+  outline: none;
+}
+
+.heroSearchButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-5);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.heroSearchButton:hover {
+  background: var(--color-primary-dark);
+}
+
+/* ---- Tabs (Secondhand / New items) ---- */
 .tabs {
   display: flex;
   gap: var(--space-2);
   margin-top: var(--space-6);
+  flex-wrap: wrap;
 }
 
 .tab,
@@ -46,6 +104,7 @@
   border-color: var(--color-primary);
 }
 
+/* ---- Filters ---- */
 .filters {
   display: grid;
   grid-template-columns: 1fr;
@@ -57,7 +116,6 @@
   padding: var(--space-4);
 }
 
-.filterInput,
 .filterInputSmall,
 .filterSelect {
   border: 1px solid var(--color-sage);
@@ -67,6 +125,7 @@
   font-family: var(--font-body);
   background: var(--color-paper);
   color: var(--color-charcoal);
+  min-width: 0;
 }
 
 .filterButton {
@@ -88,10 +147,12 @@
   background: var(--color-primary-dark);
 }
 
+/* ---- Grid — 2 columns on mobile with generous gap so cards never feel
+   cramped; scales up as room allows. ---- */
 .grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-4);
+  gap: var(--space-5) var(--space-4);
   padding-bottom: var(--space-16);
   min-width: 0;
 }
@@ -115,7 +176,7 @@
 
 @media (min-width: 640px) {
   .filters {
-    grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr auto;
+    grid-template-columns: 1.3fr 1fr 1fr 1fr 1.3fr auto;
     align-items: center;
   }
   .grid {

@@ -14,6 +14,16 @@ export interface Category {
   sort_order: number;
 }
 
+export interface ListingSpec {
+  label: string;
+  value: string;
+}
+
+export interface ListingColor {
+  name: string;
+  hex: string;
+}
+
 export interface Listing {
   id: string;
   category_id: string | null;
@@ -21,12 +31,17 @@ export interface Listing {
   slug: string;
   description: string;
   price: number;
+  compare_at_price: number | null; // NEW — "old price", struck through, drives the discount badge
+  badge: string | null; // NEW — free-text merchandising tag (Hot Deal, Offer, Bestseller...)
   condition: Condition;
   location: string;
   images: string[];
   status: ListingStatus;
-  listing_type: ListingType; // NEW
-  merchant_name: string | null; // NEW — only meaningful when listing_type === "new"
+  listing_type: ListingType;
+  merchant_name: string | null;
+  specs: ListingSpec[]; // NEW — spec-sheet rows, mainly for new/dropshipped goods
+  sizes: string[]; // NEW — optional size selector options
+  colors: ListingColor[]; // NEW — optional color selector options
   featured: boolean;
   verified: boolean;
   view_count: number;

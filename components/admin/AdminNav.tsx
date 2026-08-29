@@ -8,12 +8,12 @@ import styles from "./AdminNav.module.css";
 const LINKS = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/listings", label: "Listings" },
+  { href: "/admin/categories", label: "Categories" },
   { href: "/admin/rentals", label: "Rentals" },
   { href: "/admin/store/products", label: "Store" },
   { href: "/admin/requests", label: "Requests" },
   { href: "/admin/sales", label: "Commission" },
   { href: "/admin/settings", label: "Settings" },
-  
 ];
 
 export default function AdminNav({ email }: { email: string }) {

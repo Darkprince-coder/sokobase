@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ShieldCheck, MessageCircle, Info } from "lucide-react";
+import { ShieldCheck, Info } from "lucide-react";
 import ImageGallery from "@/components/ImageGallery";
 import ProductCard from "@/components/ProductCard";
 import StatusBadge from "@/components/StatusBadge";
-import WhatsAppLink from "@/components/WhatsAppLink";
+import ListingOrderPanel from "@/components/ListingOrderPanel";
 import Reveal from "@/components/motion/Reveal";
 import { getListingBySlug, getRelatedListings } from "@/lib/listings";
-import { formatPrice, inquireListingLink } from "@/lib/format";
+import { formatPrice, discountPercent } from "@/lib/format";
 import styles from "./listing.module.css";
 
 export const revalidate = 30; // Revalidate cached data every 30 seconds
@@ -39,6 +39,8 @@ export default async function ListingPage({ params }: Props) {
 
   const related = await getRelatedListings(listing.category_id, listing.id);
   const pageUrl = `https://sokobase.co.ke/listings/${listing.slug}`;
+  const isNew = listing.listing_type === "new";
+  const discount = discountPercent(listing.price, listing.compare_at_price);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -75,7 +77,11 @@ export default async function ListingPage({ params }: Props) {
 
         <Reveal delay={0.08} className={styles.info}>
           <div className={styles.badgeRow}>
-            <StatusBadge status={listing.status} />
+            <StatusBadge status={listing.status} soldLabel={isNew ? "Sold out" : undefined} />
+            <span className={isNew ? styles.typeTagNew : styles.typeTagSecondhand}>
+              {isNew ? "New" : "Secondhand"}
+            </span>
+            {listing.badge && <span className={styles.merchBadge}>{listing.badge}</span>}
             {listing.verified && (
               <span className={styles.verified}>
                 <ShieldCheck size={13} strokeWidth={2.2} />
@@ -85,13 +91,22 @@ export default async function ListingPage({ params }: Props) {
           </div>
 
           <h1 className={styles.title}>{listing.title}</h1>
-          <p className={`price-tag ${styles.price}`}>{formatPrice(listing.price)}</p>
+
+          <div className={styles.priceRow}>
+            <p className={`price-tag ${styles.price}`}>{formatPrice(listing.price)}</p>
+            {discount !== null && <span className={styles.discountPill}>-{discount}% OFF</span>}
+          </div>
+          {listing.compare_at_price && discount !== null && (
+            <p className={styles.comparePrice}>{formatPrice(listing.compare_at_price)}</p>
+          )}
 
           <dl className={styles.specs}>
-            <div>
-              <dt>Condition</dt>
-              <dd>{listing.condition}</dd>
-            </div>
+            {!isNew && (
+              <div>
+                <dt>Condition</dt>
+                <dd>{listing.condition}</dd>
+              </div>
+            )}
             <div>
               <dt>Category</dt>
               <dd>{listing.category?.name ?? "Uncategorized"}</dd>
@@ -100,6 +115,12 @@ export default async function ListingPage({ params }: Props) {
               <dt>Location</dt>
               <dd>{listing.location}</dd>
             </div>
+            {isNew && listing.merchant_name && (
+              <div>
+                <dt>Supplied by</dt>
+                <dd>{listing.merchant_name}</dd>
+              </div>
+            )}
           </dl>
 
           <div className={styles.description}>
@@ -107,25 +128,27 @@ export default async function ListingPage({ params }: Props) {
             <p>{listing.description}</p>
           </div>
 
-          {listing.status === "available" ? (
-            <WhatsAppLink
-              href={inquireListingLink(listing.title, pageUrl)}
-              label={`listing_${listing.slug}`}
-              className={styles.cta}
-            >
-              <MessageCircle size={17} strokeWidth={2.2} />
-              Chat to buy on WhatsApp
-            </WhatsAppLink>
-          ) : (
-            <div className={styles.unavailable}>
-              This item is {listing.status}. Check{" "}
-              <a href="/browse">other listings</a>.
+          {listing.specs.length > 0 && (
+            <div className={styles.description}>
+              <h2 className={styles.sectionLabel}>Specifications</h2>
+              <dl className={styles.specSheet}>
+                {listing.specs.map((spec, i) => (
+                  <div key={i} className={styles.specSheetRow}>
+                    <dt>{spec.label}</dt>
+                    <dd>{spec.value}</dd>
+                  </div>
+                ))}
+              </dl>
             </div>
           )}
 
+          <ListingOrderPanel listing={listing} pageUrl={pageUrl} />
+
           <p className={styles.notice}>
             <Info size={14} strokeWidth={2} />
-            Inspect before you pay. No refunds after payment.
+            {isNew
+              ? "Order today, delivered or ready for pickup in Kimana."
+              : "Inspect before you pay. No refunds after payment."}
           </p>
         </Reveal>
       </div>
