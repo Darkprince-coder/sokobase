@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getDashboardStats } from "@/lib/adminData";
 import { formatPrice } from "@/lib/format";
 import styles from "./dashboard.module.css";
+import PwaInstallsCard from "@/components/admin/PwaInstallsCard";
 
 export default async function AdminDashboardPage() {
   const stats = await getDashboardStats();
@@ -32,6 +33,7 @@ export default async function AdminDashboardPage() {
           <span className={styles.statValue}>{stats.sold}</span>
           <span className={styles.statLabel}>Sold</span>
         </div>
+        <PwaInstallsCard />
       </div>
 
       <div className={styles.commissionCard}>

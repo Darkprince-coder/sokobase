@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
 import { Space_Grotesk, Inter, IBM_Plex_Mono } from "next/font/google";
 import "../styles/globals.css";
@@ -56,10 +56,26 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: "/brand/logo-mark.svg",
+    apple: "/icons/apple-touch-icon.png",
+  },
+  // NEW — PWA: links public/manifest.json and marks the site installable.
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Sokobase",
   },
   verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
     ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
     : undefined,
+};
+
+// NEW — PWA: theme-color drives the browser/OS chrome color for the
+// installed app (status bar, task switcher card, etc.).
+export const viewport: Viewport = {
+  themeColor: "#1F7A4D",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({

@@ -3,6 +3,8 @@ import Link from "next/link";
 import { SearchX, ListFilter, Search } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 import HeroBackground from "@/components/HeroBackground";
+// NEW — PWA
+import CategoriesStrip from "@/components/pwa/CategoriesStrip";
 import { getCategories, getListings } from "@/lib/listings";
 import styles from "./browse.module.css";
 
@@ -86,6 +88,10 @@ export default async function BrowsePage({ searchParams }: BrowsePageProps) {
       </section>
 
       <div className="container">
+        {/* NEW — quick category links, mainly for the PWA's "Products"
+            tab, but useful on the website too. */}
+        <CategoriesStrip categories={categories} />
+
         <div className={styles.tabs}>
           {tabs.map((tab) => {
             const isActive = (type ?? undefined) === tab.value;
