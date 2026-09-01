@@ -48,10 +48,15 @@ declare module "lucide-react" {
   export const ImageOff: React.FC<LucideProps>;
   export const Menu: React.FC<LucideProps>;
 
-  // NEW — used by the PWA bottom nav / install prompt / list sheet
+  // Used by the PWA bottom nav / install prompt / list sheet
   export const Store: React.FC<LucideProps>;
   export const Plus: React.FC<LucideProps>;
   export const Download: React.FC<LucideProps>;
+
+  // NEW — used by components/DownloadAppSection.tsx
+  export const Share: React.FC<LucideProps>;
+  export const SquarePlus: React.FC<LucideProps>;
+  export const MonitorSmartphone: React.FC<LucideProps>;
 
   const icons: { [key: string]: React.FC<LucideProps> };
   export default icons;

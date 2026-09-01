@@ -22,6 +22,8 @@ import WhatsAppLink from "@/components/WhatsAppLink";
 import Reveal from "@/components/motion/Reveal";
 import HeroBackground from "@/components/HeroBackground";
 import HomeRedirect from "@/components/pwa/HomeRedirect";
+import DownloadAppSection from "@/components/DownloadAppSection";
+import CommunitySection from "@/components/CommunitySection";
 import { getCategories, getNewItems, getSecondhandItems } from "@/lib/listings";
 import { getOpenRequests, getTrustStats } from "@/lib/requests";
 import { getFeaturedRentals } from "@/lib/rentals";
@@ -177,6 +179,8 @@ export default async function HomePage() {
           </div>
         </Reveal>
       </section>
+
+<DownloadAppSection />
 
       <section className={styles.section}>
         <div className="container">
@@ -497,6 +501,7 @@ export default async function HomePage() {
           </WhatsAppLink>
         </Reveal>
       </section>
+      <CommunitySection />
     </main>
   );
 }
