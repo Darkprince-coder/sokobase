@@ -58,7 +58,6 @@ export const metadata: Metadata = {
     icon: "/brand/logo-mark.svg",
     apple: "/icons/apple-touch-icon.png",
   },
-  // NEW — PWA: links public/manifest.json and marks the site installable.
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
@@ -70,13 +69,34 @@ export const metadata: Metadata = {
     : undefined,
 };
 
-// NEW — PWA: theme-color drives the browser/OS chrome color for the
-// installed app (status bar, task switcher card, etc.).
 export const viewport: Viewport = {
   themeColor: "#1F7A4D",
   width: "device-width",
   initialScale: 1,
 };
+
+// iOS (Safari) doesn't build a launch screen from manifest.json the way
+// Android/Chrome does — it needs a static PNG per device size, wired up
+// via <link rel="apple-touch-startup-image">, matched by exact CSS
+// device-width/height + pixel-ratio. The files these point to live in
+// public/splash/ (generated placeholders in your brand colors — swap them
+// for real designed art any time by overwriting the same filenames).
+//
+// This list covers the common modern iPhone/iPad sizes; add more pairs
+// here (and matching images in public/splash/) for full device coverage.
+const APPLE_SPLASH_SCREENS: { file: string; media: string }[] = [
+  { file: "apple-splash-750-1334.png", media: "(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" },
+  { file: "apple-splash-828-1792.png", media: "(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" },
+  { file: "apple-splash-1125-2436.png", media: "(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" },
+  { file: "apple-splash-1170-2532.png", media: "(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)" },
+  { file: "apple-splash-1179-2556.png", media: "(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3)" },
+  { file: "apple-splash-1242-2688.png", media: "(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" },
+  { file: "apple-splash-1284-2778.png", media: "(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3)" },
+  { file: "apple-splash-1290-2796.png", media: "(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3)" },
+  { file: "apple-splash-1620-2160.png", media: "(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2)" },
+  { file: "apple-splash-1668-2388.png", media: "(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" },
+  { file: "apple-splash-2048-2732.png", media: "(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" },
+];
 
 export default function RootLayout({
   children,
@@ -87,6 +107,16 @@ export default function RootLayout({
 
   return (
     <html lang="en">
+      <head>
+        {APPLE_SPLASH_SCREENS.map((screen) => (
+          <link
+            key={screen.file}
+            rel="apple-touch-startup-image"
+            href={`/splash/${screen.file}`}
+            media={`${screen.media} and (orientation: portrait)`}
+          />
+        ))}
+      </head>
       <body
         className={`${spaceGrotesk.variable} ${inter.variable} ${plexMono.variable}`}
       >

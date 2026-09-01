@@ -1,0 +1,40 @@
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  background: var(--color-paper);
+  opacity: 1;
+  transition: opacity 0.35s ease;
+}
+
+.splash[data-leaving="true"] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.mark {
+  width: 88px;
+  height: 88px;
+}
+
+.word {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-xl);
+  color: var(--color-charcoal);
+}
+
+.word span {
+  color: var(--color-primary);
+}
+
+.tagline {
+  font-size: var(--text-sm);
+  color: #6b756e;
+  margin-top: calc(var(--space-2) * -1);
+}

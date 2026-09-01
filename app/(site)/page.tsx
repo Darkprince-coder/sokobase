@@ -21,6 +21,7 @@ import MerchProductCard from "@/components/store/MerchProductCard";
 import WhatsAppLink from "@/components/WhatsAppLink";
 import Reveal from "@/components/motion/Reveal";
 import HeroBackground from "@/components/HeroBackground";
+import HomeRedirect from "@/components/pwa/HomeRedirect";
 import { getCategories, getNewItems, getSecondhandItems } from "@/lib/listings";
 import { getOpenRequests, getTrustStats } from "@/lib/requests";
 import { getFeaturedRentals } from "@/lib/rentals";
@@ -128,6 +129,7 @@ export default async function HomePage() {
 
   return (
     <main>
+      <HomeRedirect />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
